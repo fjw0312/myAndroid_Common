@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+
+    <!--
+    类似控件 SwitchCompat
+    android:typeface="normal":设置字体类型
+
+    android:textOff="开"：设置开关checked的文字
+    android:textOn="关"：设置开关关闭时的文字
+    android:switchMinWidth=""：开关最小宽度
+    android:switchPadding="":设置开关 与文字的空白距离
+    android:switchTextAppearance="":设置文本的风格
+    android:checked="":设置初始选中状态
+    android:splitTrack="true":是否设置一个间隙，让滑块与底部图片分隔
+    android:track="":设置开关的轨迹
+    android:thumb="":设置开关的图片
+    注意：track 和 thumb 直接设置图片或颜色 无法变化开关前后图片变化
+    直接这样设图片 无法区分开关状态
+            android:track="@drawable/switch_pg"
+            android:thumb="@drawable/switch_pot"
+         故常用选择器来 设置轨迹背景 和 按钮背景 的开关2种不同状态
+    -->
+    <Switch
+        android:id="@+id/id_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="100dp"
+        android:thumb="@drawable/selector_thumb"
+        android:track="@drawable/selector_track"/>
+
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+    <!--
+    android:max="":设置最大进度
+    android:progress=""：设置当前进度
+    android:secondaryProgress=""：设置第二进度
+    android:indeterminate=""：设置是否为不明确进度进度条
+    android:thumb="":设置seekbar滑动快的图片
+    android:progressDrawable="":进度条背景图片
+    android:thumbTint="":滑动块颜色,API21以上才有效
+    -->
+
+    <SeekBar
+        android:id="@+id/id_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:secondaryProgress="20"
+        android:thumb="@drawable/selector_srubber"
+        android:progressDrawable="@drawable/layer_seekbar"
+        />
+
+</LinearLayout>
