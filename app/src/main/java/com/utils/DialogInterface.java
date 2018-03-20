@@ -3,7 +3,11 @@ package com.utils;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mycom.R;
 
@@ -33,7 +37,7 @@ public class DialogInterface {
     }
 
     //普通 询问确认对话框
-    interface InquiryDialgInterfacce{
+    public interface InquiryDialgInterfacce{
         public void onYesClick();
         public void onNodClick();
     }
@@ -61,7 +65,7 @@ public class DialogInterface {
     }
 
     //子项选择 对话框
-    interface ItemDialogInerface{
+    public interface ItemDialogInerface{
         public void onItemClick(int which);
     }
     ItemDialogInerface itemDialogInerface;
@@ -81,7 +85,7 @@ public class DialogInterface {
     }
 
     //单项选择 Dialog
-    interface SingleChoiceDialogInerface{
+    public interface SingleChoiceDialogInerface{
         public void onSingleChoiceClick(int which);
     }
     SingleChoiceDialogInerface singleChoiceDialogInerface;
@@ -101,7 +105,7 @@ public class DialogInterface {
     }
 
     //多项选择 Dialog
-    interface MultiChoiceDialogInerface{
+    public interface MultiChoiceDialogInerface{
         public void onMultiChoiceClick(int which, boolean isChecked);
     }
     MultiChoiceDialogInerface multiChoiceDialogInerface;
@@ -121,7 +125,7 @@ public class DialogInterface {
     }
 
     //输入 对话框
-    interface InputDialogInterface{
+    public interface InputDialogInterface{
         public void onInputDialog();
     }
     InputDialogInterface inputDialogInterface;
@@ -147,5 +151,97 @@ public class DialogInterface {
                 })
                 .create().show();
     }
+
+    //多功能 组合  Dialog
+    AlertDialog alert;
+    EditText editText;
+    public final static int NULL_BUTTON = 0;  //无按钮
+    public final static int SINGLE_BUTTON = 1; //单按钮
+    public final static int DOUBLE_BUTTON = 2; //双按钮
+    public final static int THREE_BUTTON = 3;  //三按钮
+    ComDialogInterface comDialogInterface;
+    public interface ComDialogInterface{
+        public void OnPositiveButton();
+        public void OnNegativeButton();
+        public void OnNeutralButton();
+        public void OnInputDialog(String str);
+    }
+    public DialogInterface setComDialogInterface(ComDialogInterface comDialogInterface){
+        this.comDialogInterface = comDialogInterface;
+        return this;
+    }
+    public void createComDialog(Context context,String title,String msg,int buttonMode){
+        View view = View.inflate(context, R.layout.dialog_base,null);
+        TextView titleText = (TextView)view.findViewById(R.id.title);
+        TextView contentText = (TextView)view.findViewById(R.id.content);
+        editText = (EditText)view.findViewById(R.id.edit_input);
+        LinearLayout cancel_ly = (LinearLayout)view.findViewById(R.id.cancel_ly);
+        LinearLayout mid_ly = (LinearLayout)view.findViewById(R.id.mid_ly);
+        LinearLayout subimt_ly = (LinearLayout)view.findViewById(R.id.subimt_ly);
+        TextView cancel = (TextView)view.findViewById(R.id.cancel);
+        TextView reset = (TextView)view.findViewById(R.id.reset);
+        TextView submit = (TextView)view.findViewById(R.id.submit);
+        if(TextUtils.isEmpty(title)){
+            titleText.setVisibility(View.GONE);
+        }else{
+            titleText.setText(title);
+        }
+        if(TextUtils.isEmpty(msg)){
+            contentText.setVisibility(View.GONE);
+        }else{
+            contentText.setText(msg);
+            editText.setVisibility(View.GONE);
+        }
+        if(buttonMode==NULL_BUTTON){
+            subimt_ly.setVisibility(View.GONE);
+            cancel_ly.setVisibility(View.GONE);
+            mid_ly.setVisibility(View.GONE);
+        }else if(buttonMode==SINGLE_BUTTON){
+            cancel_ly.setVisibility(View.GONE);
+            mid_ly.setVisibility(View.GONE);
+        }else if(buttonMode==THREE_BUTTON){
+            //按钮都显示
+        }else{
+            mid_ly.setVisibility(View.GONE);
+        }
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(comDialogInterface!=null){
+                    if(editText.getVisibility()==View.GONE){  //显示对话框
+                        comDialogInterface.OnPositiveButton();
+                    }else{                                     //输入对话框
+                        String str = editText.getText().toString();
+                        comDialogInterface.OnInputDialog(str);
+                    }
+                }
+                alert.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(comDialogInterface!=null){
+                    comDialogInterface.OnNegativeButton();
+                }
+                alert.dismiss();
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(comDialogInterface!=null){
+                    comDialogInterface.OnNeutralButton();
+                }
+                alert.dismiss();
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+        alert = builder.create();
+        alert.show();
+    }
+
 
 }

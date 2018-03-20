@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.mycom.R;
+import com.utils.DialogInterface;
 
 /**
  * Created by Administrator on 2018/3/15.
@@ -37,7 +39,27 @@ public class TestActivity extends AppCompatActivity {
         bn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new DialogInterface().setComDialogInterface(new DialogInterface.ComDialogInterface() {
+                    @Override
+                    public void OnPositiveButton() {
+                        Log.i("Jiong>>","OnPositiveButton");
+                    }
 
+                    @Override
+                    public void OnNegativeButton() {
+                        Log.i("Jiong>>","OnNegativeButton");
+                    }
+
+                    @Override
+                    public void OnNeutralButton() {
+                        Log.i("Jiong>>","OnNeutralButton");
+                    }
+
+                    @Override
+                    public void OnInputDialog(String str) {
+                        Log.i("Jiong>>","OnInputDialog  "+str);
+                    }
+                }).createComDialog(TestActivity.this,"提示","", DialogInterface.SINGLE_BUTTON);
             }
         });
     }
