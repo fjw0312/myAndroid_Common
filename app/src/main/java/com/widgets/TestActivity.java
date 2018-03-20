@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.mycom.R;
@@ -15,6 +16,8 @@ import com.mycom.R;
  */
 
 public class TestActivity extends AppCompatActivity {
+
+    Button bn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,5 +32,13 @@ public class TestActivity extends AppCompatActivity {
         View seekbarView = seekBarInterface.setView(this);
         addContentView(seekbarView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
+
+        bn = (Button)findViewById(R.id.Bn_id);
+        bn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
