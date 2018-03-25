@@ -1,12 +1,9 @@
 package com.widgets;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 
 import com.mycom.R;
 
@@ -14,8 +11,8 @@ import com.mycom.R;
  * Created by Administrator on 2018/3/16.
  */
 
-public class SeekBarInterface implements SeekBar.OnSeekBarChangeListener{
-    public SeekBarInterface(){
+public class SeekBarDemo implements SeekBar.OnSeekBarChangeListener{
+    public SeekBarDemo(){
     }
 
     Context mContext;

@@ -13,8 +13,8 @@ import com.mycom.R;
  * Created by Administrator on 2018/3/16.
  */
 
-public class SwitchInterface implements CompoundButton.OnCheckedChangeListener{
-    public SwitchInterface(){
+public class SwitchDemo implements CompoundButton.OnCheckedChangeListener{
+    public SwitchDemo(){
     }
 
     Context mContext;

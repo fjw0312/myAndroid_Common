@@ -1,6 +1,5 @@
 package com.widgets;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.mycom.R;
-import com.utils.DialogInterface;
+import com.utils.dialog.DialogInterface;
 
 /**
  * Created by Administrator on 2018/3/15.
@@ -25,12 +24,12 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widgets);
 
-        SwitchInterface switchInterface = new SwitchInterface();
+        SwitchDemo switchInterface = new SwitchDemo();
         View switchView = switchInterface.setView(this);
         addContentView(switchView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
-        SeekBarInterface seekBarInterface = new SeekBarInterface();
+        SeekBarDemo seekBarInterface = new SeekBarDemo();
         View seekbarView = seekBarInterface.setView(this);
         addContentView(seekbarView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
