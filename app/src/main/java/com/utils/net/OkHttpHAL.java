@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;

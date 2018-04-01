@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.MyApplication;
 import com.utils.LogcatFileHAL;
 import com.utils.MyBroadcastReceiver;
-import com.utils.MyUtils;
 
 /****
  * android usb 通信处理类

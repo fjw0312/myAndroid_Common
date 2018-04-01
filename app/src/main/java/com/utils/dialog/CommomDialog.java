@@ -121,7 +121,7 @@ public class CommomDialog extends Dialog implements View.OnClickListener{
     /***使用案例：
      * new CommomDialog(mContext, R.style.commdialog, "您确定删除此信息？", new CommomDialog.OnCloseListener() {
     @Override
-            public void onClick(boolean confirm) {
+            public void onClick(Dialog dialog, boolean confirm) {
             if(confirm){
             Toast.makeText(this,"点击确定", Toast.LENGTH_SHORT).show();
             dialog.dismiss();

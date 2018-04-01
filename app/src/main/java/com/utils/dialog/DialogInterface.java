@@ -239,9 +239,15 @@ public class DialogInterface {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(view);
+        builder.setCancelable(false);  //不予许 点击空白区域取消
         alert = builder.create();
         alert.show();
     }
+    /**
+     * 使用demo
+     * new DialogInterface.setComDialogInterface().createComDialog();
+     *
+     * */
 
 
 }

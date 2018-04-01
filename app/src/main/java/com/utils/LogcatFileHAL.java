@@ -23,7 +23,6 @@ public class LogcatFileHAL {
 	public static boolean  IsLog = true;  //是否调试打印Log
 	public static boolean  IsUse  = false;  //使用 本地日志 打印功能
 	public static int TimeFlag = 0;  // 0：默认不打印时间   1：打印时间数  2：打印时间字符串
-	public static String FilePath = "/mnt/sdcard/fjw/";
 	public static String FileName = "Logcat.txt";
 
 	
@@ -31,7 +30,7 @@ public class LogcatFileHAL {
 		super();
 		// TODO Auto-generated constructor stub
 //		fileHAL = new FileHAL(FilePath+FileName);
-		FileName += MyApplication.getContext().getPackageName();
+		FileName = MyApplication.SAVE_FILE_PATH + MyApplication.DATA_DIR + FileName;
 		if(!MyThread.isAlive()){
 			MyThread.start();
 		}
@@ -42,7 +41,7 @@ public class LogcatFileHAL {
 		this.IsLog = isLog;
 		this.IsUse = isUse;
 		this.TimeFlag = timeFlag;
-		FileName += MyApplication.getContext().getPackageName();
+		FileName = MyApplication.SAVE_FILE_PATH + MyApplication.DATA_DIR + FileName;
 		if(!MyThread.isAlive()){
 			MyThread.start();
 		}
@@ -53,7 +52,7 @@ public class LogcatFileHAL {
 
 //	static FileHAL fileHAL = null;
 	public static void deleteLogFile(){
-		FileHAL fileHAL = new FileHAL(FilePath+FileName);
+		FileHAL fileHAL = new FileHAL(FileName);
 		fileHAL.deleteFile();
 	}
 	 
@@ -94,7 +93,7 @@ public class LogcatFileHAL {
 						msgFile_lst.add("日志打印太频繁 超过6000条无法响应");
 					}
 					for(int i =0;i<msgFile_lst.size();i++){
-						FileHAL fileHAL = new FileHAL(FilePath+FileName);	
+						FileHAL fileHAL = new FileHAL(FileName);
 						fileHAL.write_line(msgFile_lst.get(i));
 					}
 					msgFile_lst.clear(); 

@@ -26,6 +26,9 @@ import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.MyApplication;
+
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
  *  使用方式：MyApplication.oncreate 添加2句   就Ok
@@ -177,8 +180,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
             if (Environment.getExternalStorageState().equals( Environment.MEDIA_MOUNTED)) {
-
-                path = Environment.getExternalStorageDirectory() + "/crash/";  //保存crash 异常文件路劲
+                path = MyApplication.SAVE_FILE_PATH + MyApplication.CRASH_DIR;  //保存 异常文件路劲
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();
