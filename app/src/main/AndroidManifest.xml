@@ -13,14 +13,24 @@
         android:supportsRtl="true"
         android:name="com.MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name="com.widgets.TestActivity">
+        <activity android:name="com.mycom.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".Demo.SlideActivity"
+            android:theme="@style/MyTheme"
+            android:enabled="true"
+            android:exported="true"/>
+        <activity android:name=".Demo.SlideLayoutActivity"
+            android:theme="@style/MyTheme"
+            android:enabled="true"
+            android:exported="true"/>
+        <activity android:name="com.fragment.single.TestSignalFragmentActivity"
+            android:enabled="true"
+            android:exported="true"/>
 
 
         <receiver

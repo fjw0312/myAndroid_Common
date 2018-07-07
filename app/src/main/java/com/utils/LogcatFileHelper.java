@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.MyApplication;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,15 +17,15 @@ import java.util.List;
  * 使用时需要 new LogcatFileHAL();
  * 
  * */
-public class LogcatFileHAL {
+public class LogcatFileHelper {
 
 	public static boolean  IsLog = true;  //是否调试打印Log
 	public static boolean  IsUse  = false;  //使用 本地日志 打印功能
 	public static int TimeFlag = 0;  // 0：默认不打印时间   1：打印时间数  2：打印时间字符串
 	public static String FileName = "Logcat.txt";
 
-	
-	public LogcatFileHAL() {
+
+	public LogcatFileHelper() {
 		super();
 		// TODO Auto-generated constructor stub
 //		fileHAL = new FileHAL(FilePath+FileName);
@@ -35,7 +34,7 @@ public class LogcatFileHAL {
 			MyThread.start();
 		}
 	}
-	public LogcatFileHAL(boolean isLog,boolean isUse,int timeFlag) {
+	public LogcatFileHelper(boolean isLog, boolean isUse, int timeFlag) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.IsLog = isLog;
@@ -52,7 +51,7 @@ public class LogcatFileHAL {
 
 //	static FileHAL fileHAL = null;
 	public static void deleteLogFile(){
-		FileHAL fileHAL = new FileHAL(FileName);
+		FileHelper fileHAL = new FileHelper(FileName);
 		fileHAL.deleteFile();
 	}
 	 
@@ -93,7 +92,7 @@ public class LogcatFileHAL {
 						msgFile_lst.add("日志打印太频繁 超过6000条无法响应");
 					}
 					for(int i =0;i<msgFile_lst.size();i++){
-						FileHAL fileHAL = new FileHAL(FileName);
+						FileHelper fileHAL = new FileHelper(FileName);
 						fileHAL.write_line(msgFile_lst.get(i));
 					}
 					msgFile_lst.clear(); 

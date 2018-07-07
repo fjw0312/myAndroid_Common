@@ -1,10 +1,5 @@
 package com.utils.usb;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,11 +10,13 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
-import android.widget.Toast;
 
 import com.MyApplication;
-import com.utils.LogcatFileHAL;
+import com.utils.LogcatFileHelper;
 import com.utils.MyBroadcastReceiver;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 /****
  * android usb 通信处理类
@@ -52,25 +49,25 @@ public class UsbHAL {
 	 * **/
 	//初始化   获得 usb设备的初始化信息
 	public int get_usb_info(){ //先传入mydevice
-		LogcatFileHAL.i("UsbHAL->get_usb_info", "into ！ ");
+		LogcatFileHelper.i("UsbHAL->get_usb_info", "into ！ ");
 		//1. 打开usb 设备
 		connection = usbManager.openDevice(mydevice); // 打开usb设备
 		if (connection == null) { // 不成功，则退出    usbManager.openDevice error
 			MyBroadcastReceiver.sendBroad_Error_HAL("Usb打开失败！");
-			LogcatFileHAL.w("UsbHAL->get_usb_info", "Usb openDevice Error！ ");
+			LogcatFileHelper.w("UsbHAL->get_usb_info", "Usb openDevice Error！ ");
 			return -1;
 		}
 		//2.判断 usb接口设备 数量
 		if (mydevice.getInterfaceCount() != 1) {  // 接口数量
 			MyBroadcastReceiver.sendBroad_Error_HAL("Usb接口数量异常！");
-			LogcatFileHAL.w("UsbHAL->get_usb_info", "Usb Interface fault！ ");
+			LogcatFileHelper.w("UsbHAL->get_usb_info", "Usb Interface fault！ ");
 			return -2;
 		}
 		//3.获得 第一个接口
 		intf = mydevice.getInterface(0); // 获取第一个接口
 		if (intf == null) {
 			MyBroadcastReceiver.sendBroad_Error_HAL("Usb接口异常null");
-			LogcatFileHAL.w("UsbHAL->get_usb_info", "Usb Interface null ");
+			LogcatFileHelper.w("UsbHAL->get_usb_info", "Usb Interface null ");
 			return -3;
 		}
 		//4. 独占接口
@@ -80,7 +77,7 @@ public class UsbHAL {
 		int cnt = intf.getEndpointCount(); // 获取端点数
 		if (cnt < 1) {
 			MyBroadcastReceiver.sendBroad_Error_HAL("Usb接口端点获取失败！");
-			LogcatFileHAL.w("UsbHAL->get_usb_info", "Usb Endpoint Error ");
+			LogcatFileHelper.w("UsbHAL->get_usb_info", "Usb Endpoint Error ");
 			return -4;
 		}
 		//获得 输出端点  输入端点
@@ -97,7 +94,7 @@ public class UsbHAL {
 		}
 
 		//	MyBroadcastReceiver.sendBroad_MSG_HAL("Usb设备打开初始化 正常！");
-		LogcatFileHAL.i("UsbHAL->get_usb_info", "Usb open and init UsbDevice Info OK! ");
+		LogcatFileHelper.i("UsbHAL->get_usb_info", "Usb open and init UsbDevice Info OK! ");
 		return 0;
 	}
 
@@ -108,7 +105,7 @@ public class UsbHAL {
 		usbManager = (UsbManager) MyApplication.getContext().getSystemService(Context.USB_SERVICE); // 获取usb服务
 		if (usbManager == null) {
 			MyBroadcastReceiver.sendBroad_Error_HAL("获取USB服务失败！");
-			LogcatFileHAL.e("UsbHAL->UsbSerch", "get UsbManager Error！ ");
+			LogcatFileHelper.e("UsbHAL->UsbSerch", "get UsbManager Error！ ");
 			return -1;
 		}
 		//2. 搜索所有的usb设备   获得usb设备UsbDevice
@@ -119,14 +116,14 @@ public class UsbHAL {
 			if (device.getVendorId() == 0x0471&& device.getProductId() == 0x5002) {
 				mydevice = device;
 				MyBroadcastReceiver.sendBroad_MSG_HAL("获得Usb设备！");
-				LogcatFileHAL.i("UsbHAL->UsbSerch", "get Usb Device！ ");
+				LogcatFileHelper.i("UsbHAL->UsbSerch", "get Usb Device！ ");
 				break;
 			}
 		}
 		//3. 判断 是否没有找到 所要的设备
 		if (mydevice == null) {
 			MyBroadcastReceiver.sendBroad_Error_HAL("未找到USB Device！");
-			LogcatFileHAL.e("UsbHAL->UsbSerch", "not find USB Device , device=null");
+			LogcatFileHelper.e("UsbHAL->UsbSerch", "not find USB Device , device=null");
 			return -2;
 		}
 

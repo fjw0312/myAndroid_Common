@@ -4,8 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
-import com.utils.CrashHandler;
-import com.utils.LogcatFileHAL;
+import com.utils.LogcatFileHelper;
 
 /***
  * 全局 Application  Context 获取
@@ -36,7 +35,7 @@ public class MyApplication extends Application{
 //		CrashHandler crashHandler = CrashHandler.getInstance();
 //		crashHandler.init(getApplicationContext());
 		//初始化 日志打印
-		new LogcatFileHAL(true,false,2);
+		new LogcatFileHelper(true,false,2);
 	}
 
 	//获取 context

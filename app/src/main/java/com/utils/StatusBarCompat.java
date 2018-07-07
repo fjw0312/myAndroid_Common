@@ -3,7 +3,9 @@ package com.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -70,5 +72,33 @@ public class StatusBarCompat {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static int getDaoHangHeight(Context context) {
+        int result = 0;
+        int resourceId=0;
+        int rid = context.getResources().getIdentifier("config_showNavigationBar", "bool", "android");
+        if (rid!=0){
+            resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            LogcatFileHelper.i("Jiong>>","获得导航栏高度: "+context.getResources().getDimensionPixelSize(resourceId));
+            return context.getResources().getDimensionPixelSize(resourceId);
+        }else
+            return 0;
+    }
+
+    public static void getSreenSize(Activity activity){  //注意：获取 到没 计算包含导航栏 高度
+        //屏幕
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        LogcatFileHelper.i("Jiong>>","获得屏幕 高度:"+dm.heightPixels +"   屏幕 宽度:"+dm.widthPixels+"  density:"+dm.density +"   densityDpi:"+dm.densityDpi);
+        LogcatFileHelper.i("Jiong>>", "xdpi:"+dm.xdpi+"  ydpi:"+dm.ydpi);
+
+        //应用区域
+        Rect outRect1 = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(outRect1);
+        LogcatFileHelper.i("Jiong>>","获得应用区域 高度:"+outRect1.height()+ "应用区域 宽度:"+outRect1.width());
+        LogcatFileHelper.i("Jiong>>","获得应用区域 距离顶部:"+outRect1.top+ "屏幕  距离底部部:"+outRect1.bottom);
+
+
     }
 }

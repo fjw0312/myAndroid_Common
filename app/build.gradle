@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+
     defaultConfig {
         applicationId "mycom.com.mycom"
         minSdkVersion 19
@@ -19,13 +21,17 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.0.0-beta1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:0.5'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support.test:runner:0.5'
+    compile 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.squareup.okio:okio:1.7.0'
-    implementation files('libs/volley.jar')
+    compile files('libs/volley.jar')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
+    //第三方 开源框架 SmartRefreshLayout
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'//没有使用特殊Header，可以不加这行
 }

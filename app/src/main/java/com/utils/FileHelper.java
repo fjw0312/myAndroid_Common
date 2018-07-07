@@ -1,6 +1,8 @@
 package com.utils;
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,14 +17,13 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import android.util.Log;
 
 /***
  *  文件File IO 操作
  * 
  * */
-public class FileHAL {
-	
+public class FileHelper {
+
 	File file = null;   //文件类变量
 	Writer fws = null;   //写入字符流
 	Reader frs = null;   //读出字符流
@@ -30,12 +31,12 @@ public class FileHAL {
 	OutputStream fos = null; //写入字节流
 	BufferedReader bufread = null; //高级读取文本流
 	PrintWriter  priwrite = null; //高级写入文本流
-	
-	public FileHAL() {
+
+	public FileHelper() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public FileHAL(String strFileName) {
+	public FileHelper(String strFileName) {
 		super();
 		// TODO Auto-generated constructor stub
 		file = new File(strFileName);
@@ -105,20 +106,34 @@ public class FileHAL {
 			}
 				
 			return buf;
-	}	
+	}
 	//写入字节
-	public boolean write_byte(byte[] buf){
-			
+	public boolean write_byte(byte[] buf, boolean isAdd){  //是否追加写入
+
 		try{
-			fos = new FileOutputStream(file);		
+			fos = new FileOutputStream(file, isAdd);
 			fos.write(buf);
 			fos.close();
-			}catch(Exception e){
-				Log.e("文件","写入字符流失败");
-				return false;
-			}
-		
-			return true;
+		}catch(Exception e){
+			Log.e("文件","写入字符流失败");
+			return false;
+		}
+
+		return true;
+	}
+	//写入字节
+	public boolean write_byte(byte[] buf, boolean isAdd,int off, int lenth){  //是否追加写入
+
+		try{
+			fos = new FileOutputStream(file, isAdd);
+			fos.write(buf,off, lenth);
+			fos.close();
+		}catch(Exception e){
+			Log.e("文件","写入字符流失败");
+			return false;
+		}
+
+		return true;
 	}
 
 	//读取 字符串

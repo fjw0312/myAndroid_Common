@@ -1,16 +1,11 @@
 package com.mycom.Demo;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.MyApplication;
 import com.mycom.R;
-import com.utils.LogcatFileHAL;
 import com.viewbase.OverlaysBaseView;
 
 /**
