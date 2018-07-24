@@ -3,26 +3,18 @@ package com.utils.NodeInfo;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.UiAutomation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Rect;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Toast;
-import com.MyApplication;
-import com.utils.LogcatFileHAL;
+
+import com.utils.LogcatFileHelper;
 import com.utils.MyBroadcastReceiver;
 
 import java.util.List;
@@ -30,6 +22,21 @@ import java.util.List;
 /**
  * Created by jiongfang on 2018/3/1.
  * 无障碍 服务 使用时 资源文件必须注册
+ * 记得 导入 xml 资源文件 及 注册文件的配置：
+ *
+ *  <service
+        android:name="com.NodeInfo.RobService"
+        android:enabled="true"
+        android:exported="true"
+        android:process=":process.RobService"
+        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+        <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService"/>
+        </intent-filter>
+        <meta-data
+        android:name="android.accessibilityservice"
+        android:resource="@xml/accessibility"/>
+    </service>
  */
 public class RobService extends AccessibilityService {
 
@@ -45,11 +52,11 @@ public class RobService extends AccessibilityService {
     private boolean isAccessibilitySettingsOn(String accessibilityServiceName, Context context) {
         int accessibilityEnable = 0;
         String serviceName = context.getPackageName() + "/" +accessibilityServiceName;
-        LogcatFileHAL.i("Jiong"+TAG,"into isAccessibilitySettingsOn"+serviceName);
+        LogcatFileHelper.i("Jiong"+TAG,"into isAccessibilitySettingsOn"+serviceName);
         try {
             accessibilityEnable = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, 0);
         } catch (Exception e) {
-            LogcatFileHAL.e("Jiong"+TAG, "get accessibility enable failed, the err:" + e.getMessage());
+            LogcatFileHelper.e("Jiong"+TAG, "get accessibility enable failed, the err:" + e.getMessage());
         }
         if (accessibilityEnable == 1) {
              TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
@@ -59,13 +66,13 @@ public class RobService extends AccessibilityService {
                 while (mStringColonSplitter.hasNext()) {
                     String accessibilityService = mStringColonSplitter.next();
                     if (accessibilityService.equalsIgnoreCase(serviceName)) {
-                        LogcatFileHAL.i("Jiong"+TAG, "We've found the correct setting - accessibility is switched on!");
+                        LogcatFileHelper.i("Jiong"+TAG, "We've found the correct setting - accessibility is switched on!");
                         return true;
                     }
                 }
             }
         }else {
-            LogcatFileHAL.d(TAG,"Accessibility service disable");
+            LogcatFileHelper.d(TAG,"Accessibility service disable");
         }
         return false;
     }
@@ -75,11 +82,11 @@ public class RobService extends AccessibilityService {
         for (AccessibilityServiceInfo info : accessibilityServices) {
             String thisClassName = this.getClass().getSimpleName();
             if (info.getId().contains(thisClassName)) {
-                LogcatFileHAL.i("Jiong>>","判断无障碍服务是否开启  开启"+thisClassName);
+                LogcatFileHelper.i("Jiong>>","判断无障碍服务是否开启  开启"+thisClassName);
                 return true;
             }
         }
-        LogcatFileHAL.i("Jiong>>","判断无障碍服务是否开启  --- 未开启");
+        LogcatFileHelper.i("Jiong>>","判断无障碍服务是否开启  --- 未开启");
         return false;
     }
     private void enableRobService() { //跳转到无障碍服务设置页面
@@ -93,8 +100,12 @@ public class RobService extends AccessibilityService {
     @Override
     public void onDestroy() {
         unregisterReceiver(receiver);
+        if(myThread != null){
+            myThread.interrupt();
+            myThread = null;
+        }
         MyBroadcastReceiver.sendBroad_MSG_HAL("无障碍服务 被KiLL ！");
-        LogcatFileHAL.e("Jiong","RobService->onDestroy !  无障碍服务 被KiLL");
+        LogcatFileHelper.e("Jiong","RobService->onDestroy !  无障碍服务 被KiLL");
         super.onDestroy();
     }
     @Override
@@ -104,7 +115,7 @@ public class RobService extends AccessibilityService {
     //  可以  不用在页面中  就捕获到按键 事件
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        LogcatFileHAL.i("Jiong>."+TAG,"RobService onKeyEvent========KeyCode="+event.getKeyCode());
+        LogcatFileHelper.i("Jiong>."+TAG,"RobService onKeyEvent========KeyCode="+event.getKeyCode());
         return super.onKeyEvent(event);
     }
 
@@ -130,36 +141,37 @@ public class RobService extends AccessibilityService {
         //跑一心跳 打印线程
         new MyThread().start();
 
-        if(isServiceEnabled() ) {
-            LogcatFileHAL.i("Jiong","isServiceEnabled !");
-            //实例化 一个MyNodeInfoUtil
-            nodeInfoUtil = new MyNodeInfoUtil(this);
+        LogcatFileHelper.i("Jiong>>"+TAG,"onCreate ! 进程id="+android.os.Process.myPid());
+        if(isServiceEnabled() ) {   //无障碍 已真正使能    //使能开关打开 -启动服务   （不会自动执行onServiceConnected了 ）
+            LogcatFileHelper.i("Jiong>>"+TAG,"isServiceEnabled !");
+            //实例化 一个NodeInfoUtil
+            if(nodeInfoUtil == null){
+                nodeInfoUtil = new MyNodeInfoUtil(this);
+            }
             IsServiceConnected = true;
-        }else{
-            if(isAccessibilitySettingsOn(this.getClass().getName(), mContext)){
+            runThread();
+        }else{  // //无障碍 没真正使能
+            if(isAccessibilitySettingsOn(this.getClass().getName(), mContext)){  //无障碍使能开关 已开启  (比如 手动开启开关)（不会自动执行onServiceConnected了 ）
                 //延时 再判断
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if(isServiceEnabled() ){
-                            LogcatFileHAL.i("Jiong"," 延时在判断 isServiceEnabled !");
-                            //实例化 一个MyNodeInfoUtil
-                            nodeInfoUtil = new MyNodeInfoUtil(RobService.this);
-                            IsServiceConnected = true;
+                            LogcatFileHelper.i("Jiong>>"+TAG," 延时在判断 isServiceEnabled !");
                             onServiceConnected();
                         }
                     }
-                },2000);
-            }else{  //未打开 无障碍 开关 跳到打开设置页面
+                },2000);  //当系统 设置使能使，迅速开机启动 会 isAccessibilitySettingsOn = true 一定延时后 会系统打开使能开关 执行onServiceConnected，故延时2s
+            }else{  //无障碍使能开关 未开启 请求开启
                 String msgContent = "请打开无障碍服务!";
-                LogcatFileHAL.i("Jiong",msgContent);
+                LogcatFileHelper.i("Jiong>>"+TAG,msgContent);
                 MyBroadcastReceiver.sendBroad_MSG_HAL(msgContent);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         enableRobService();
                     }
-                },500);
+                },500); //页面跳转 感觉出来
             }
         }
     }
@@ -176,23 +188,37 @@ public class RobService extends AccessibilityService {
         //实例化 一个MyNodeInfoUtil
         nodeInfoUtil = new MyNodeInfoUtil(this);
         IsServiceConnected = true;
-        LogcatFileHAL.i("Jiong>>","into onServiceConnected");
+        LogcatFileHelper.i("Jiong>>","into onServiceConnected");
+        runThread();
     }
 
 
-
+    private MyThread myThread;
+    private void runThread(){
+        if(myThread == null){
+            myThread = new MyThread();
+            myThread.start();
+        }else{
+            if(!myThread.isAlive()){
+                myThread = null;
+                myThread = new MyThread();
+                myThread.start();
+            }
+        }
+    }
     //心跳 检测服务 线程
     private class MyThread extends Thread {
         @Override
         public void run() {
             super.run();
+            if(!IsServiceConnected) return;
             try {
                 while (true) {
                     Thread.sleep(5*1000);
-                    LogcatFileHAL.i("Jiong>>","RobService alive!");
+                    LogcatFileHelper.i("Jiong>>","RobService alive!");
                 }
             }catch (InterruptedException e){
-                LogcatFileHAL.e("Jiong>>","TAG--Die!");
+                LogcatFileHelper.e("Jiong>>","TAG--Die!");
             }
         }
     }
@@ -228,7 +254,7 @@ public class RobService extends AccessibilityService {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            LogcatFileHAL.i("Jiong>>"+TAG,"接收到广播："+action);
+            LogcatFileHelper.i("Jiong>>"+TAG,"接收到广播："+action);
 
         }
     }

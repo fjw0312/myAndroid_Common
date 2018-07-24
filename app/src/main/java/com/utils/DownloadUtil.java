@@ -1,10 +1,9 @@
-package com.utils.net.load;
+package com.utils;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.MyApplication;
-import com.utils.LogcatFileHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,14 +16,12 @@ import java.net.URL;
 
 /**
  * Created by martinpeng on 2016/10/17.
+ * 下载完 后 记得还要校验 一下md5.
  */
 public class DownloadUtil {
 
-    public final static  String UPDATE_ZIP_DIR = MyApplication.SAVE_FILE_PATH+"update/";
-    public final static  String UPDATE_ZIP_FILE = UPDATE_ZIP_DIR+"loaded.hex";
-
-    private static final String MD5_SHAREPERF_FILE_NAME = "MD5_downloadInfo";  //MD5  sharedPerf文件 名称
-    private static final String KEY_MD5_INFO = "key_download_md5_info";   //MD5  sharedPerf文件key值
+    public final static  String UPDATE_ZIP_DIR_USBHID = MyApplication.SAVE_FILE_PATH+"USBVupdate/";
+    public final static  String UPDATE_ZIP_FILE_USBHID = UPDATE_ZIP_DIR_USBHID+"usbHidUpdate.bin";
 
     public static boolean isDownloading = false;
     private static long oldDownloadPos = 0 ;
@@ -40,7 +37,6 @@ public class DownloadUtil {
      * @param httpUrl
      * @param saveFile 文件的临时存储路径
      * @return true:下载成功,false 失败
-     * 该 类 包含了MD5 校验  断电续传
      */
     private static boolean httpDownload(String httpUrl, String saveFile) {
         // 下载网络文件
@@ -58,7 +54,7 @@ public class DownloadUtil {
         RandomAccessFile fs = null;
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("User-Agent","K9");
+            conn.setRequestProperty("User-Agent","K9_UsbHid");
             conn.setConnectTimeout(5 * 1000); // 设置连接超时
             conn.setRequestProperty("Connection", "Keep-Alive");
             if(oldDownloadPos!= 0) {
@@ -124,7 +120,7 @@ public class DownloadUtil {
 
 
     public static void deleteDownloadFile() {
-        File dir = new File(UPDATE_ZIP_DIR);
+        File dir = new File(UPDATE_ZIP_DIR_USBHID);
 
         if (!dir.exists()) {
             return;
@@ -138,7 +134,7 @@ public class DownloadUtil {
     }
 
     private static long calculateDownloadFileSize(){
-        File file = new File(UPDATE_ZIP_FILE);
+        File file = new File(UPDATE_ZIP_FILE_USBHID);
         if(file != null && file.exists()){
             return file.length();
         }
@@ -194,13 +190,13 @@ public class DownloadUtil {
         new Thread() {
             @Override
             public void run() {
-                File dir = new File(UPDATE_ZIP_DIR);
+                File dir = new File(UPDATE_ZIP_DIR_USBHID);
                 if(dir == null || !dir.exists()){
                     dir.mkdirs();
                 }
-                boolean result = httpDownload(url, UPDATE_ZIP_FILE);
+                boolean result = httpDownload(url, UPDATE_ZIP_FILE_USBHID);
                 if (listener != null) {
-                    listener.onDonwloadComplete(result, UPDATE_ZIP_FILE);
+                    listener.onDonwloadComplete(result, UPDATE_ZIP_FILE_USBHID);
                 }
                 isDownloading = false;
             }
@@ -211,18 +207,18 @@ public class DownloadUtil {
 
     private static class StateInfoPersist {
 
-
+        private static final String KEY_MD5_INFO = "key_download_usbHid_md5_info";
 
         public static void setDownloadMD5Info(String md5) {
             if (md5 == null) {
                 return;
             }
-            MyApplication.getContext().getSharedPreferences(MD5_SHAREPERF_FILE_NAME, Context.MODE_PRIVATE).edit()
+            MyApplication.getContext().getSharedPreferences("k9_usbHid_downloadInfo", Context.MODE_PRIVATE).edit()
                     .putString(KEY_MD5_INFO, md5).commit();
         }
 
         public static String getDownloadMD5Info() {
-            return MyApplication.getContext().getSharedPreferences(MD5_SHAREPERF_FILE_NAME, Context.MODE_PRIVATE).getString(KEY_MD5_INFO, "");
+            return MyApplication.getContext().getSharedPreferences("k9_usbHid_downloadInfo", Context.MODE_PRIVATE).getString(KEY_MD5_INFO, "");
         }
     }
 
@@ -232,14 +228,15 @@ public class DownloadUtil {
         void onProgress(int progress);
     }
 
-    // 静态接口  任何地方提前设置  下载过程 完成 的接口回调就可以了
     public static void setListener(DownloadChangedListener listener) {
         DownloadUtil.listener = listener;
     }
 
+
     /**
-     * 使用demo
-     *  startDownload(); //最后在子线程中
-     *  setListener();
-     * */
+     * 使用方式：
+     * DownloadUtil.startDownload(updateBean.md5,updateBean.rew_url);
+     * DownloadUtil.setListener(downloadChangedListener);
+     *
+     */
 }

@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.MyApplication;
 import com.mycom.R;
-import com.utils.LogcatFileHAL;
+import com.utils.LogcatFileHelper;
 import com.utils.dialog.DialogInterface;
 
 /**
@@ -26,7 +26,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widgets);
 
-        LogcatFileHAL.i("Jiong>>文件储存路劲："," "+ MyApplication.SAVE_FILE_PATH);
+        LogcatFileHelper.i("Jiong>>文件储存路劲："," "+ MyApplication.SAVE_FILE_PATH);
         SwitchDemo switchInterface = new SwitchDemo();
         View switchView = switchInterface.setView(this);
         addContentView(switchView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -64,5 +64,7 @@ public class TestActivity extends AppCompatActivity {
                 }).createComDialog(TestActivity.this,"提示","", DialogInterface.SINGLE_BUTTON);
             }
         });
+
     }
+
 }
