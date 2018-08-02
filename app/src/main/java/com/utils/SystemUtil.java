@@ -950,7 +950,7 @@ public class SystemUtil {
      *
      * @return
      */
-    private String getSDTotalSize(Context context) {
+    public static String getSDTotalSize(Context context) {
         File path = Environment.getExternalStorageDirectory();
         StatFs stat = new StatFs(path.getPath());
         long blockSize = stat.getBlockSize();
@@ -963,7 +963,7 @@ public class SystemUtil {
      *
      * @return
      */
-    private String getSDAvailableSize(Context context) {
+    public static String getSDAvailableSize(Context context) {
         File path = Environment.getExternalStorageDirectory();
         StatFs stat = new StatFs(path.getPath());
         long blockSize = stat.getBlockSize();
@@ -976,7 +976,7 @@ public class SystemUtil {
      *
      * @return
      */
-    private String getRomTotalSize(Context context) {
+    public static String getRomTotalSize(Context context) {
         File path = Environment.getDataDirectory();
         StatFs stat = new StatFs(path.getPath());
         long blockSize = stat.getBlockSize();
@@ -989,7 +989,7 @@ public class SystemUtil {
      *
      * @return
      */
-    private String getRomAvailableSize(Context context) {
+    public static String getRomAvailableSize(Context context) {
         File path = Environment.getDataDirectory();
         StatFs stat = new StatFs(path.getPath());
         long blockSize = stat.getBlockSize();

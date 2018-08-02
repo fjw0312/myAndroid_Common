@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fragment.single.TestSignalFragmentActivity;
+import com.utils.LogcatFileHelper;
 import com.utils.SystemUtil;
 
 import java.lang.ref.WeakReference;
@@ -49,10 +50,19 @@ public class MainActivity extends AppCompatActivity {
         String sysModel = SystemUtil.getSysModel(); //获取系统型号
         String sysVersion = SystemUtil.getSysVersion(); //获取系统版本
         int SDKVersion = SystemUtil.getSDKVersion(); //获取sdk 版本
+        LogcatFileHelper.i("Jiong","系统型号:"+sysModel+"     系统版本:"+sysVersion+"   sdk 版本:"+SDKVersion);
         //2.获取屏幕尺寸 分辨率 density
         int[] screen = SystemUtil.getScreenSize(getBaseContext());
         float density = SystemUtil.getDensity(getBaseContext());
         int height = SystemUtil.getDpi(getBaseContext());
+        LogcatFileHelper.i("Jiong","系统屏幕尺寸:"+screen[0]+"    "+screen[1]+"     density:"+density+"   height:"+height);
+        //3.获取 内存 sdcard 容量  以及 剩余容量
+        String ramTotalSize = SystemUtil.getRomTotalSize(getBaseContext());
+        String ramAvaSize = SystemUtil.getRomAvailableSize(getBaseContext());
+        String sdcardSize = SystemUtil.getSDTotalSize(getBaseContext());
+        String sdcardAvaSize = SystemUtil.getSDAvailableSize(getBaseContext());
+        LogcatFileHelper.i("Jiong","ramTotalSize:"+ramTotalSize+"     ramAvaSize:"+ramAvaSize);
+        LogcatFileHelper.i("Jiong","sdcardSize:"+sdcardSize+"     sdcardAvaSize:"+sdcardAvaSize);
         //3.是否能执行 root & exec 代码
 
     }
