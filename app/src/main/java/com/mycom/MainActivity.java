@@ -11,10 +11,10 @@ import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-
 import com.fragment.single.TestSignalFragmentActivity;
 import com.utils.LogcatFileHelper;
 import com.utils.SystemUtil;
+
 
 import java.lang.ref.WeakReference;
 
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         //1.获取系统android 版本
         String sysModel = SystemUtil.getSysModel(); //获取系统型号
@@ -102,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     /***
      * 如果 要 获取 非主线程的 Looper 使用方式：
      * 1. new Handler(getWorkLooper())
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return mWorker.getLooper();
     }
+
     protected int getWorkLooperThreadPriority() {
         return Process.THREAD_PRIORITY_BACKGROUND;
     }

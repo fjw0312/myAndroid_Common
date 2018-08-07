@@ -130,16 +130,14 @@ public class RobService extends AccessibilityService {
     MyNodeInfoUtil nodeInfoUtil;
     String getMsg = "";
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this.getBaseContext();
         //注册 广播
         registerReciver(mContext);
-
-
-        //跑一心跳 打印线程
-        new MyThread().start();
 
         LogcatFileHelper.i("Jiong>>"+TAG,"onCreate ! 进程id="+android.os.Process.myPid());
         if(isServiceEnabled() ) {   //无障碍 已真正使能    //使能开关打开 -启动服务   （不会自动执行onServiceConnected了 ）
@@ -148,6 +146,7 @@ public class RobService extends AccessibilityService {
             if(nodeInfoUtil == null){
                 nodeInfoUtil = new MyNodeInfoUtil(this);
             }
+
             IsServiceConnected = true;
             runThread();
         }else{  // //无障碍 没真正使能
@@ -157,7 +156,12 @@ public class RobService extends AccessibilityService {
                     @Override
                     public void run() {
                         if(isServiceEnabled() ){
-                            LogcatFileHelper.i("Jiong>>"+TAG," 延时在判断 isServiceEnabled !");
+
+                            LogcatFileHelper.i("Jiong"," 延时在判断 isServiceEnabled !");
+                            //实例化 一个MyNodeInfoUtil
+                            nodeInfoUtil = new MyNodeInfoUtil(RobService.this);
+                            IsServiceConnected = true;
+
                             onServiceConnected();
                         }
                     }
@@ -175,6 +179,7 @@ public class RobService extends AccessibilityService {
             }
         }
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
          //判断确认 无障碍服务 服务和功能启动  后  进入 业务处理
@@ -189,9 +194,10 @@ public class RobService extends AccessibilityService {
         nodeInfoUtil = new MyNodeInfoUtil(this);
         IsServiceConnected = true;
         LogcatFileHelper.i("Jiong>>","into onServiceConnected");
-        runThread();
-    }
 
+        runThread();
+
+    }
 
     private MyThread myThread;
     private void runThread(){

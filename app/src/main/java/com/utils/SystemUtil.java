@@ -945,6 +945,7 @@ public class SystemUtil {
         return result;
     }
 
+
     /**
      * 获得SD卡总大小
      *
@@ -996,6 +997,7 @@ public class SystemUtil {
         long availableBlocks = stat.getAvailableBlocks();
         return Formatter.formatFileSize(context, blockSize * availableBlocks);
     }
+
 
 
 }

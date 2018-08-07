@@ -3,7 +3,6 @@ package com;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
-
 import com.mycom.BuildConfig;
 import com.utils.LogcatFileHelper;
 
@@ -36,9 +35,11 @@ public class MyApplication extends Application{
 //		CrashHandler crashHandler = CrashHandler.getInstance();
 //		crashHandler.init(getApplicationContext());
 		//初始化 日志打印
+
 		//boolean enableLog = BuildConfig.DEBUG;
 		boolean enableLog = BuildConfig.ENABLE_LOG;  //日志打开开关 等于编译变量
 		new LogcatFileHelper(enableLog,false,2);
+
 	}
 
 	//获取 context
