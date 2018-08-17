@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +22,20 @@ public class DialogInterface {
     public DialogInterface(){
 
     }
+    private int Width = 0;
+    private int Height = 0;
+    public void setDialogWidth(int Width){
+        this.Width = Width;
+    }
+    public void setDialogHeight(int Height){
+        this.Height = Height;
+    }
+    public void setDialogWidthHeight(int Width,int Height){
+        this.Width = Width;
+        this.Height = Height;
+    }
+
+
     //进度 对话框
     public void showProgressDialog(Context context){
         ProgressDialog progressDialog = new ProgressDialog(context);
@@ -29,7 +46,7 @@ public class DialogInterface {
         progressDialog.show();
     }
     //普通 提示 对话框
-    public void showAlertDialog(Context context,String title,String msg){
+    public void showAlertDialog(Context context, String title, String msg){
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(msg)
@@ -45,7 +62,7 @@ public class DialogInterface {
     public void setInquiryDialgInterfacce(InquiryDialgInterfacce inquiryDialgInterfacce){
         this.inquiryDialgInterfacce = inquiryDialgInterfacce;
     }
-    public void showInquiryDialog(Context context,String title,String msg){
+    public void showInquiryDialog(Context context, String title, String msg){
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(msg)
@@ -72,7 +89,7 @@ public class DialogInterface {
     public void setItemDialogInerface(ItemDialogInerface itemDialogInerface){
         this.itemDialogInerface = itemDialogInerface;
     }
-    public void showItemDialog(Context context,String title,String[] items){
+    public void showItemDialog(Context context, String title, String[] items){
         if(items == null || items.length ==0) return;
         new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -92,7 +109,7 @@ public class DialogInterface {
     public void setSingleChoiceDialogInerface(SingleChoiceDialogInerface singleChoiceDialogInerface){
         this.singleChoiceDialogInerface = singleChoiceDialogInerface;
     }
-    public void showSingleChoiceDialog(Context context,String title,String[] items){
+    public void showSingleChoiceDialog(Context context, String title, String[] items){
         if(items == null || items.length ==0) return;
         new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -112,7 +129,7 @@ public class DialogInterface {
     public void setMultiChoiceDialogInerface(MultiChoiceDialogInerface multiChoiceDialogInerface){
         this.multiChoiceDialogInerface = multiChoiceDialogInerface;
     }
-    public void showMultiChoiceDialog(Context context,String title,String[] items){
+    public void showMultiChoiceDialog(Context context, String title, String[] items){
         if(items == null || items.length ==0) return;
         new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -132,7 +149,7 @@ public class DialogInterface {
     public void setInputDialogInterface(InputDialogInterface inputDialogInterface){
         this.inputDialogInterface = inputDialogInterface;
     }
-    public void showInputDialog(Context context,String title){
+    public void showInputDialog(Context context, String title){
         View view = View.inflate(context, R.layout.widgets_dialog_input,null);
         new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -170,7 +187,7 @@ public class DialogInterface {
         this.comDialogInterface = comDialogInterface;
         return this;
     }
-    public void createComDialog(Context context,String title,String msg,int buttonMode){
+    public void createComDialog(Context context, String title, String msg,String hintText, int buttonMode){
         View view = View.inflate(context, R.layout.dialog_base,null);
         TextView titleText = (TextView)view.findViewById(R.id.title);
         TextView contentText = (TextView)view.findViewById(R.id.content);
@@ -189,8 +206,15 @@ public class DialogInterface {
         if(TextUtils.isEmpty(msg)){
             contentText.setVisibility(View.GONE);
         }else{
+            contentText.setVisibility(View.VISIBLE);
             contentText.setText(msg);
+            // editText.setVisibility(View.GONE);
+        }
+        if(TextUtils.isEmpty(hintText)){
             editText.setVisibility(View.GONE);
+        }else{
+            editText.setVisibility(View.VISIBLE);
+            editText.setHint(hintText);
         }
         if(buttonMode==NULL_BUTTON){
             subimt_ly.setVisibility(View.GONE);
@@ -208,7 +232,7 @@ public class DialogInterface {
             @Override
             public void onClick(View v) {
                 if(comDialogInterface!=null){
-                    if(editText.getVisibility()==View.GONE){  //显示对话框
+                    if(editText.getVisibility()== View.GONE){  //显示对话框
                         comDialogInterface.OnPositiveButton();
                     }else{                                     //输入对话框
                         String str = editText.getText().toString();
@@ -242,12 +266,29 @@ public class DialogInterface {
         builder.setCancelable(false);  //不予许 点击空白区域取消
         alert = builder.create();
         alert.show();
+
+        //设置对话框尺寸
+        Window window = alert.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.gravity = Gravity.CENTER;
+        if(Width != 0  && Height != 0){
+            lp.width  = Width;
+            lp.height = Height;
+        }else if(Width != 0  && Height == 0){
+            lp.width = Width;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        }else if(Width == 0 && Height != 0){
+            lp.width = WindowManager.LayoutParams.WRAP_CONTENT;//宽高可设置具体大小
+            lp.height = Height;
+        }
+        alert.getWindow().setAttributes(lp);
     }
     /**
      * 使用demo
      * new DialogInterface.setComDialogInterface().createComDialog();
      *
      * */
+
 
 
 }
