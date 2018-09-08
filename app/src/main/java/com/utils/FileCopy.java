@@ -27,13 +27,20 @@ public class FileCopy {
      * @throws IOException
      */
     public  void copyFile(String oldPath, String newPath) throws IOException {
+        //先清除 已存在的文件
+        File file = new File(newPath);
+        if(file.exists() && file.isFile()){
+            file.delete();
+        }
+        //获取源文件大小
         File oldFile = new File(oldPath);
         long size = oldFile.length();
         long hasSize = 0;
-     //   File file = new File(newPath);
+        //初始化创建 目标文件
+        //   File file = new File(newPath);
         FileHelper newFileHAL = new FileHelper(newPath);
         FileInputStream in = new FileInputStream(oldFile);
-       // FileOutputStream out = new FileOutputStream(file);;
+        // FileOutputStream out = new FileOutputStream(file);
         long time = System.currentTimeMillis();
         long newTime = 0;
         long i = 0;

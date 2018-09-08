@@ -24,6 +24,8 @@ public class DialogInterface {
     }
     private int Width = 0;
     private int Height = 0;
+    private int x = 0;
+    private int y = 0;
     public void setDialogWidth(int Width){
         this.Width = Width;
     }
@@ -33,6 +35,16 @@ public class DialogInterface {
     public void setDialogWidthHeight(int Width,int Height){
         this.Width = Width;
         this.Height = Height;
+    }
+    public void setX(int x){
+        this.x = x;
+    }
+    public void setY(int y){
+        this.y = y;
+    }
+    public void setXY(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
 
@@ -261,6 +273,7 @@ public class DialogInterface {
             }
         });
 
+        //AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.commdialog);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(view);
         builder.setCancelable(false);  //不予许 点击空白区域取消
@@ -270,7 +283,19 @@ public class DialogInterface {
         //设置对话框尺寸
         Window window = alert.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.gravity = Gravity.CENTER;
+        if(x != 0 && y != 0){
+            lp.x = x;
+            lp.y = y;
+            lp.gravity = Gravity.LEFT|Gravity.TOP;
+        }else if(x != 0 && y == 0){
+            lp.x = x;
+            lp.gravity = Gravity.LEFT|Gravity.CENTER_VERTICAL;
+        }else if(x == 0 && y != 0){
+            lp.y = y;
+            lp.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
+        }else{
+            lp.gravity = Gravity.CENTER;
+        }
         if(Width != 0  && Height != 0){
             lp.width  = Width;
             lp.height = Height;

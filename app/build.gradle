@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 25
     buildToolsVersion "26.0.0"
 
     defaultConfig {
         applicationId "mycom.com.mycom"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,4 +38,9 @@ dependencies {
     //第三方 开源框架 SmartRefreshLayout
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'//没有使用特殊Header，可以不加这行
+
+    //
+    compile 'com.android.support:design:25.3.1'
+
+
 }

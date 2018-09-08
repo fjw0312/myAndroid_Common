@@ -334,4 +334,39 @@ public class FileHelper {
 		return true;
 	}
 
+	/**
+	 * 文件 拷贝
+	 * @param oldPath
+	 * @param newPath
+	 * @throws IOException
+	 */
+	public static void copyFile(String oldPath, String newPath) throws IOException {
+		//先清除 已存在的文件
+		File file = new File(newPath);
+		if(file.exists() && file.isFile()){
+			file.delete();
+		}
+		//获取源文件大小
+		File oldFile = new File(oldPath);
+		long size = oldFile.length();
+		long hasSize = 0;
+		//初始化创建 目标文件
+		FileHelper newFileHAL = new FileHelper(newPath);
+		FileInputStream in = new FileInputStream(oldFile);
+		// FileOutputStream out = new FileOutputStream(file);;
+		long time = System.currentTimeMillis();
+		long newTime = 0;
+		long i = 0;
+		byte[] buffer = new byte[10*1024];  //10k
+		int len = 0;
+		while((len = in.read(buffer)) != -1){
+			newFileHAL.write_byte(buffer,true, 0, len);
+			//out.write(buffer);
+			hasSize = hasSize + len;
+		}
+		if(in!=null){
+			in.close();
+		}
+	}
+
 }

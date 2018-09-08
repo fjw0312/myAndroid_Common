@@ -61,7 +61,7 @@ public class TestActivity extends AppCompatActivity {
                     public void OnInputDialog(String str) {
                         Log.i("Jiong>>","OnInputDialog  "+str);
                     }
-                }).createComDialog(TestActivity.this,"提示","", DialogInterface.SINGLE_BUTTON);
+                }).createComDialog(TestActivity.this,"提示","","", DialogInterface.SINGLE_BUTTON);
             }
         });
 

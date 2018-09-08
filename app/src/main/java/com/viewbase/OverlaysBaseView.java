@@ -3,6 +3,7 @@ package com.viewbase;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,23 @@ public class OverlaysBaseView {
     public void removeOverlays(){
         windowManager.removeView(mView);
     }
+    //隐藏浮窗
+    public void dismissDelayToast(int delayMs) {
+        mDismissHandler.removeCallbacks(mDismissRunnable);
+        mDismissHandler.postDelayed(mDismissRunnable, delayMs);
+    }
+    //隐藏浮窗
+    public void dismissToast() {
+        mDismissHandler.removeCallbacks(mDismissRunnable);
+        mDismissHandler.post(mDismissRunnable);
+    }
+    private Handler mDismissHandler = new Handler();
+    private Runnable mDismissRunnable = new Runnable() {
+        @Override
+        public void run() {
+            removeOverlays();
+        }
+    };
 
     /**
      * 使用方式
