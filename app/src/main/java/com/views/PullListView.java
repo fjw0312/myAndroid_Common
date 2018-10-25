@@ -240,10 +240,10 @@ public class PullListView extends ListView {
         void onRollBack(PullListView listView);
 
         /**
-         * @param listView 当前拖动的ListView
+         * @param listView    当前拖动的ListView
          * @param rollPercent 目前滚动的百分比
          * @param freePercent 触摸释放时的百分比
-         * @param pullDown 是否"下拉”
+         * @param pullDown    是否"下拉”
          */
         void onRolling(PullListView listView, float rollPercent, float freePercent, boolean pullDown);
     }
@@ -305,7 +305,7 @@ public class PullListView extends ListView {
 
     /**
      * 设置默认显示高度
-     * 
+     *
      * @param height
      */
     public void setDefaultSlideHeaderViewHeight(int height) {
@@ -314,7 +314,7 @@ public class PullListView extends ListView {
 
     /**
      * 设置KGPullListView顶部可拉动header背景图
-     * 
+     *
      * @param slideBitmap
      */
     public void setSlideHeaderBackground(Bitmap slideBitmap) {
@@ -330,13 +330,12 @@ public class PullListView extends ListView {
 
     /**
      * 设置KGPullListView顶部可拉动header背景图
-     * 
+     *
      * @param resId
      */
     public void setSlideHeaderBackground(int resId) {
         mSlideHeaderView.setSlideHeaderBackground(resId);
     }
-
 
 
     public HeaderView getSlideHeaderView() {
@@ -347,9 +346,9 @@ public class PullListView extends ListView {
 /**
  * 使用案例：与ListView 布局使用一致
  * demo1:
- *  PullListView   pullListView = findViewById();
- *  pullListView.setAdapter();    //配置列表适配器
- *  pullListView.addHeaderView()  //加表头  //也可不加
- *  pullListView.setSlideEnable(true);      //使能可拉伸
-    pullListView.setSlideHeaderView(imageView);  //配置拉伸图
- * **/
+ * PullListView   pullListView = findViewById();
+ * pullListView.setAdapter();    //配置列表适配器
+ * pullListView.addHeaderView()  //加表头  //也可不加
+ * pullListView.setSlideEnable(true);      //使能可拉伸
+ * pullListView.setSlideHeaderView(imageView);  //配置拉伸图
+ **/

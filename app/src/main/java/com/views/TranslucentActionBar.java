@@ -12,7 +12,7 @@ import com.mycom.R;
 
 /**
  * 类功能描述： 可透明 标题栏
- *  Android沉浸式状态栏 + scrollView顶部伸缩 + actionBar渐变
+ * Android沉浸式状态栏 + scrollView顶部伸缩 + actionBar渐变
  * 博客地址：http://blog.csdn.net/androidstarjack
  */
 public final class TranslucentActionBar extends LinearLayout {
@@ -171,12 +171,12 @@ public final class TranslucentActionBar extends LinearLayout {
     /**
      * 使用demo
      *   actionBar = (TranslucentActionBar) findViewById(R.id.actionbar);
-       //初始actionBar
-        actionBar.setData("我的", 0, null, 0, null, null);
-       //开启渐变
-       actionBar.setNeedTranslucent();
-       //设置状态栏高度
-       actionBar.setStatusBarHeight(getStatusBarHeight());
+     //初始actionBar
+     actionBar.setData("我的", 0, null, 0, null, null);
+     //开启渐变
+     actionBar.setNeedTranslucent();
+     //设置状态栏高度
+     actionBar.setStatusBarHeight(getStatusBarHeight());
      *
      * */
 

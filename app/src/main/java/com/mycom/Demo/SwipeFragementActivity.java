@@ -21,10 +21,9 @@ import java.util.List;
 
 /**
  * Created by jiongfang on 2018/9/6.
- *  参考资料： https://www.jianshu.com/p/f09723b7e887/
- *  使用强大的CoordinatorLayout 布局控件
- *  1.先  compile 'com.android.support:design:24.1.0'  添加框架依赖
- *
+ * 参考资料： https://www.jianshu.com/p/f09723b7e887/
+ * 使用强大的CoordinatorLayout 布局控件
+ * 1.先  compile 'com.android.support:design:24.1.0'  添加框架依赖
  */
 public class SwipeFragementActivity extends AppCompatActivity {
 
@@ -38,7 +37,7 @@ public class SwipeFragementActivity extends AppCompatActivity {
         setContentView(R.layout.coorinatorlayout_activity);
         FullScreenUI.FullScreenUI(this);
 
-       // initToolBar();
+        // initToolBar();
         initFragment();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.vp_main);
@@ -61,7 +60,7 @@ public class SwipeFragementActivity extends AppCompatActivity {
         Fragment3 foundFragment = new Fragment3();
         // 将三个fragment放入List里面管理，方便使用
         mFragments = new ArrayList<>();
-        mFragments.add( msgFragment);
+        mFragments.add(msgFragment);
         mFragments.add(friendFragment);
         mFragments.add(foundFragment);
     }

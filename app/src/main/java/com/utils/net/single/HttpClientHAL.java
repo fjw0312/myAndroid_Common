@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 
 
-
 //import MyApplicationInit.MyApplication;
 import android.content.Intent;
 import android.os.Looper;
@@ -21,12 +20,12 @@ import com.MyApplication;
  * HttpClient 接口     不再使用
  * android 内嵌的apach 开源HttpClient  在android 6.0 就被舍弃了。
  * date:2017.5.24
- * */
+ */
 public class HttpClientHAL {
 
-	public HttpClientHAL() {
-		// TODO Auto-generated constructor stub
-	}
+    public HttpClientHAL() {
+        // TODO Auto-generated constructor stub
+    }
 /*
 	//发送  GET 请求
 	public static String sendReques_Get(String strUrl){

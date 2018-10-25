@@ -13,19 +13,19 @@ import com.mycom.R;
  * Created by Administrator on 2018/3/16.
  */
 
-public class SwitchDemo implements CompoundButton.OnCheckedChangeListener{
-    public SwitchDemo(){
+public class SwitchDemo implements CompoundButton.OnCheckedChangeListener {
+    public SwitchDemo() {
     }
 
     Context mContext;
     View mView;
     Switch mSwitch;
 
-    public View setView(Context context){
+    public View setView(Context context) {
         mContext = context;
-        mView = LayoutInflater.from(mContext).inflate(R.layout.widgets_switch,null);
+        mView = LayoutInflater.from(mContext).inflate(R.layout.widgets_switch, null);
 
-        mSwitch = (Switch)mView.findViewById(R.id.id_switch);
+        mSwitch = (Switch) mView.findViewById(R.id.id_switch);
         mSwitch.setOnCheckedChangeListener(this);
 
         return mView;
@@ -33,13 +33,13 @@ public class SwitchDemo implements CompoundButton.OnCheckedChangeListener{
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(buttonView.getId() == R.id.id_switch){
-            if(isChecked){
+        if (buttonView.getId() == R.id.id_switch) {
+            if (isChecked) {
                 //按钮 打开
-                Log.i("Jiong","按钮 打开");
-            }else{
+                Log.i("Jiong", "按钮 打开");
+            } else {
                 //按钮 关闭
-                Log.i("Jiong","按钮 关闭");
+                Log.i("Jiong", "按钮 关闭");
             }
         }
     }

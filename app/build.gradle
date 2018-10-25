@@ -42,5 +42,9 @@ dependencies {
     //
     compile 'com.android.support:design:25.3.1'
 
+    //条形码 二维码 框架依赖
+    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
 
+    //Excel xls 框架依赖
+    compile 'me.zhouzhuo.zzexcelcreator:zz-excel-creator:1.0.0'
 }

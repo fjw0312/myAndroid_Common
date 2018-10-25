@@ -59,20 +59,22 @@ import java.util.List;
 
 public class SystemUtil {
     private static final String EXTRA_DEF_KEYBOARDHEIGHT = "DEF_KEYBOARDHEIGHT";
-    /** 键盘默认高度 (dp) */
+    /**
+     * 键盘默认高度 (dp)
+     */
     private static int sDefKeyboardHeight = 300;
 
     public static int getDefKeyboardHeight(Context context) {
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         int height = settings.getInt(EXTRA_DEF_KEYBOARDHEIGHT, 0);
         if (height > 0 && sDefKeyboardHeight != height) {
-            SystemUtil.setDefKeyboardHeight(context,height);
+            SystemUtil.setDefKeyboardHeight(context, height);
         }
         return sDefKeyboardHeight;
     }
 
     public static void setDefKeyboardHeight(Context context, int height) {
-        if(sDefKeyboardHeight != height){
+        if (sDefKeyboardHeight != height) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             settings.edit().putInt(EXTRA_DEF_KEYBOARDHEIGHT, height).commit();
         }
@@ -153,7 +155,6 @@ public class SystemUtil {
         }
         return imei;
     }
-
 
 
     /**
@@ -252,7 +253,6 @@ public class SystemUtil {
     }
 
 
-
     /**
      * 检查摄像头是否可用
      *
@@ -261,8 +261,8 @@ public class SystemUtil {
      */
     public static boolean isCameraAvailable(Context context) {
         if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) // check
-                                                                                          // camera
-                                                                                          // hardware
+            // camera
+            // hardware
             return false;
 
         Camera c = null;
@@ -285,7 +285,7 @@ public class SystemUtil {
      * @return LayerDrawable
      */
     public static Drawable getProgressBarBgDrawable() {
-        return getProgressBarBgDrawable(Color.parseColor("#66ffffff"), Color.parseColor("#24ffffff"),4);
+        return getProgressBarBgDrawable(Color.parseColor("#66ffffff"), Color.parseColor("#24ffffff"), 4);
     }
 
 
@@ -305,8 +305,6 @@ public class SystemUtil {
         layerDrawable.setId(1, android.R.id.progress);
         return layerDrawable;
     }
-
-
 
 
     /**
@@ -334,27 +332,27 @@ public class SystemUtil {
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
 
-        return new int[] {
+        return new int[]{
                 screenWidth, screenHeight
         };
     }
 
     /**
      * 获取屏幕尺寸，单位为英寸
-     * @param context
-     * 根据分辨率和像素计算屏幕尺寸
+     *
+     * @param context 根据分辨率和像素计算屏幕尺寸
      * @return
      * @deprecated
      */
-    public static double getScreenSizeInInch(Context context){
+    public static double getScreenSizeInInch(Context context) {
         DisplayMetrics dm = new DisplayMetrics();
-        dm=context.getApplicationContext().getResources().getDisplayMetrics();
+        dm = context.getApplicationContext().getResources().getDisplayMetrics();
         int height = dm.heightPixels;
-        int width = dm.widthPixels ;
-        double screenSize = Math.sqrt(height*height
-                + width*width);
-        double screenSizeInInch = screenSize/(dm.densityDpi);
-        Log.d("计算尺寸","高度："+height+" 宽度："+width+" 对角线："+screenSize+" 分辨率："+dm.densityDpi+" 英寸："+screenSizeInInch+" 高："+dm.xdpi+"宽："+dm.ydpi);
+        int width = dm.widthPixels;
+        double screenSize = Math.sqrt(height * height
+                + width * width);
+        double screenSizeInInch = screenSize / (dm.densityDpi);
+        Log.d("计算尺寸", "高度：" + height + " 宽度：" + width + " 对角线：" + screenSize + " 分辨率：" + dm.densityDpi + " 英寸：" + screenSizeInInch + " 高：" + dm.xdpi + "宽：" + dm.ydpi);
         return screenSizeInInch;
     }
 
@@ -383,6 +381,7 @@ public class SystemUtil {
 
     /**
      * 是否有navigationBar
+     *
      * @param context
      * @return
      */
@@ -409,10 +408,9 @@ public class SystemUtil {
     }
 
     /**
-     *
-     * @param num 需格式化数
-     * @param decimalCount  小数点后位数
-     * @param isRound 是否四舍五入
+     * @param num          需格式化数
+     * @param decimalCount 小数点后位数
+     * @param isRound      是否四舍五入
      * @return
      */
     public static String formateDecimal(double num, int decimalCount, boolean isRound) {
@@ -421,7 +419,7 @@ public class SystemUtil {
         formater.setGroupingSize(0);
         if (!isRound) {
             formater.setRoundingMode(RoundingMode.FLOOR);
-        }else{
+        } else {
             formater.setRoundingMode(RoundingMode.HALF_UP);
         }
         return formater.format(num);
@@ -429,22 +427,23 @@ public class SystemUtil {
 
     /**
      * 显示软键盘
+     *
      * @param context
      * @param edit
      */
     public static void showSoftInput(Context context, final View edit) {
-        try{
+        try {
             final InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputManager != null && inputManager.isActive(edit)) {
                 inputManager.showSoftInput(edit, 0);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void showSoftInputDelay(Context context, final View edit, long delay) {
-        try{
+        try {
             final InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputManager != null) {
                 if (!inputManager.isActive(edit)) {
@@ -463,41 +462,43 @@ public class SystemUtil {
                 }
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 隐藏软键盘
+     *
      * @param context
      * @param edit
      */
     public static void hideSoftInput(Context context, View edit) {
-        try{
+        try {
             InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputManager != null && inputManager.isActive(edit)) {
                 inputManager.hideSoftInputFromWindow(edit.getWindowToken(), 0);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void hideSoftInput(Activity activity) {
-        try{
+        try {
             InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             View view = activity.getCurrentFocus();
-            if(inputManager != null && inputManager.isActive() && view!=null) {
+            if (inputManager != null && inputManager.isActive() && view != null) {
                 inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 获取当前系统每个app的内存等级，即最大使用内存
+     *
      * @param context
      * @return
      */
@@ -527,15 +528,17 @@ public class SystemUtil {
             android.os.Debug.MemoryInfo memoryInfo = processMemoryInfo[0];
             long totalPrivateDirty = memoryInfo.getTotalPrivateDirty(); //KB
 
-                Log.i(" memory", tag + "-getTaskInfos :" +
-                        "\npackageName:" + packageName +
-                        "\npid:" + pid +
-                        "\n占用内存（kb）:" + totalPrivateDirty);
+            Log.i(" memory", tag + "-getTaskInfos :" +
+                    "\npackageName:" + packageName +
+                    "\npid:" + pid +
+                    "\n占用内存（kb）:" + totalPrivateDirty);
 
         }
     }
+
     /**
      * 获取进程名
+     *
      * @param context
      * @return
      */
@@ -590,12 +593,13 @@ public class SystemUtil {
 
     /**
      * 获取屏幕宽
+     *
      * @param context
      * @return
      */
     @SuppressWarnings("deprecation")
     public static int getDisplayWidth(Context context) {
-        if(context == null) {
+        if (context == null) {
             return 0;
         }
         int width = 0;
@@ -603,7 +607,7 @@ public class SystemUtil {
         Display display = wm.getDefaultDisplay();
         try {
             Class<?> cls = Display.class;
-            Class<?>[] parameterTypes = { Point.class };
+            Class<?>[] parameterTypes = {Point.class};
             Point parameter = new Point();
             Method method = cls.getMethod("getSize", parameterTypes);
             method.invoke(display, parameter);
@@ -616,12 +620,13 @@ public class SystemUtil {
 
     /**
      * 获取屏幕高
+     *
      * @param context
      * @return
      */
     @SuppressWarnings("deprecation")
     public static int getDisplayHeight(Context context) {
-        if(context == null) {
+        if (context == null) {
             return 0;
         }
         int height = 0;
@@ -629,7 +634,7 @@ public class SystemUtil {
         Display display = wm.getDefaultDisplay();
         try {
             Class<?> cls = Display.class;
-            Class<?>[] parameterTypes = { Point.class };
+            Class<?>[] parameterTypes = {Point.class};
             Point parameter = new Point();
             Method method = cls.getMethod("getSize", parameterTypes);
             method.invoke(display, parameter);
@@ -642,22 +647,24 @@ public class SystemUtil {
 
     /**
      * 获取 虚拟按键的高度
+     *
      * @param context
      * @return
      */
-    public static  int getBottomStatusHeight(Context context){
+    public static int getBottomStatusHeight(Context context) {
         int totalHeight = getDpi(context);
         int contentHeight = getDisplayHeight(context);
-        return totalHeight  - contentHeight;
+        return totalHeight - contentHeight;
     }
 
 
     /**
      * 获取屏幕原始尺寸高度，包括虚拟功能键高度
+     *
      * @param context
      * @return
      */
-    public static int getDpi(Context context){
+    public static int getDpi(Context context) {
         int dpi = 0;
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
@@ -667,10 +674,10 @@ public class SystemUtil {
         try {
             c = Class.forName("android.view.Display");
             @SuppressWarnings("unchecked")
-            Method method = c.getMethod("getRealMetrics",DisplayMetrics.class);
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
             method.invoke(display, displayMetrics);
-            dpi=displayMetrics.heightPixels;
-        }catch(Exception e){
+            dpi = displayMetrics.heightPixels;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return dpi;
@@ -678,11 +685,12 @@ public class SystemUtil {
 
     /**
      * 获取系统bar条高
+     *
      * @param activity
      * @return
      */
     public static int getStatusBarHeight(Activity activity) {
-        if(activity == null) {
+        if (activity == null) {
             return 0;
         }
         int statusHeight = 0;
@@ -716,7 +724,7 @@ public class SystemUtil {
      * @return
      */
     public static boolean isCurAppTop(Context context) {
-        if(context == null) {
+        if (context == null) {
             return false;
         }
         String curPackageName = context.getPackageName();
@@ -735,6 +743,7 @@ public class SystemUtil {
 
     /**
      * 获取手机IP地址
+     *
      * @return
      */
     public static String getLocalIpAddress() {
@@ -757,11 +766,12 @@ public class SystemUtil {
 
     /**
      * 获取系统相册路径, 耗时操作
+     *
      * @param context
      * @return
      */
     public static String getAlbumPath(Context context) {
-        if(context == null) {
+        if (context == null) {
             return null;
         }
         ContentResolver cr = context.getContentResolver();
@@ -859,14 +869,17 @@ public class SystemUtil {
 
     /**
      * 获取MAC地址
+     *
      * @param context
      * @return
      */
     public static String getMac(Context context) {
         return getMac(context, true);
     }
+
     /**
      * 获取MAC地址
+     *
      * @param context
      * @param withHyphen 是否带"-"
      * @return
@@ -891,6 +904,7 @@ public class SystemUtil {
 
     /**
      * 获取设备标识，使用串号加网卡地址
+     *
      * @param context
      * @return
      */
@@ -925,9 +939,9 @@ public class SystemUtil {
         long hour = min * 60;
         long day = hour * 24;
         long month = day * 30;
-        if(time > month){
-            return  "1个月前";
-        }else if (time > day) {
+        if (time > month) {
+            return "1个月前";
+        } else if (time > day) {
             return time / day + "天前";
         } else if (time > hour) {
             return time / hour + "小时前";
@@ -997,7 +1011,6 @@ public class SystemUtil {
         long availableBlocks = stat.getAvailableBlocks();
         return Formatter.formatFileSize(context, blockSize * availableBlocks);
     }
-
 
 
 }

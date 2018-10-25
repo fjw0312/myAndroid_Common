@@ -13,7 +13,7 @@ import com.mycom.R;
  * Created by Administrator on 2018/3/19.
  */
 
-public class CommomDialog extends Dialog implements View.OnClickListener{
+public class CommomDialog extends Dialog implements View.OnClickListener {
 
     private TextView contentTxt;
     private TextView titleTxt;
@@ -50,17 +50,17 @@ public class CommomDialog extends Dialog implements View.OnClickListener{
         this.mContext = context;
     }
 
-    public CommomDialog setTitle(String title){
+    public CommomDialog setTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public CommomDialog setPositiveButton(String name){
+    public CommomDialog setPositiveButton(String name) {
         this.positiveName = name;
         return this;
     }
 
-    public CommomDialog setNegativeButton(String name){
+    public CommomDialog setNegativeButton(String name) {
         this.negativeName = name;
         return this;
     }
@@ -73,24 +73,24 @@ public class CommomDialog extends Dialog implements View.OnClickListener{
         initView();
     }
 
-    private void initView(){
-        contentTxt = (TextView)findViewById(R.id.content);
-        titleTxt = (TextView)findViewById(R.id.title);
-        submitTxt = (TextView)findViewById(R.id.submit);
+    private void initView() {
+        contentTxt = (TextView) findViewById(R.id.content);
+        titleTxt = (TextView) findViewById(R.id.title);
+        submitTxt = (TextView) findViewById(R.id.submit);
         submitTxt.setOnClickListener(this);
-        cancelTxt = (TextView)findViewById(R.id.cancel);
+        cancelTxt = (TextView) findViewById(R.id.cancel);
         cancelTxt.setOnClickListener(this);
 
         contentTxt.setText(content);
-        if(!TextUtils.isEmpty(positiveName)){
+        if (!TextUtils.isEmpty(positiveName)) {
             submitTxt.setText(positiveName);
         }
 
-        if(!TextUtils.isEmpty(negativeName)){
+        if (!TextUtils.isEmpty(negativeName)) {
             cancelTxt.setText(negativeName);
         }
 
-        if(!TextUtils.isEmpty(title)){
+        if (!TextUtils.isEmpty(title)) {
             titleTxt.setText(title);
         }
 
@@ -98,35 +98,34 @@ public class CommomDialog extends Dialog implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.cancel:
-                if(listener != null){
+                if (listener != null) {
                     listener.onClick(this, false);
                 }
                 this.dismiss();
                 break;
             case R.id.submit:
-                if(listener != null){
+                if (listener != null) {
                     listener.onClick(this, true);
                 }
                 break;
         }
     }
 
-    public interface OnCloseListener{
+    public interface OnCloseListener {
         void onClick(Dialog dialog, boolean confirm);
     }
 
 
     /***使用案例：
      * new CommomDialog(mContext, R.style.commdialog, "您确定删除此信息？", new CommomDialog.OnCloseListener() {
-    @Override
-            public void onClick(Dialog dialog, boolean confirm) {
-            if(confirm){
-            Toast.makeText(this,"点击确定", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-            }
-        }
+    @Override public void onClick(Dialog dialog, boolean confirm) {
+    if(confirm){
+    Toast.makeText(this,"点击确定", Toast.LENGTH_SHORT).show();
+    dialog.dismiss();
+    }
+    }
     })
      .setTitle("提示").show();
      *

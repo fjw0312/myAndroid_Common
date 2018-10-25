@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.views.SlideLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/slidelayout"
-    android:background="#33aaff">
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:id="@+id/slidelayout"
+                       android:background="#33aaff">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="SlideLayout Activity"
-        android:textSize="20sp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="SlideLayout Activity"
+            android:textSize="20sp"/>
 
 </com.views.SlideLayout>

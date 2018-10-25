@@ -12,9 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.fragment.testfragement.Fragment1;
@@ -23,13 +24,17 @@ import com.fragment.testfragement.Fragment3;
 import com.utils.FullScreenUI;
 import com.utils.LogcatFileHelper;
 import com.utils.SystemUtil;
+import com.views.GalleyViewPager;
 import com.views.HeaderView;
+import com.views.ImageViewPager;
 import com.views.PullListView;
+import com.views.RoundImageView;
 import com.views.TranslucentScrollView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /*****
  * author:fjw0312
@@ -41,16 +46,26 @@ public class MainActivity extends AppCompatActivity {
 
     Button Bn_start;
 
-    String[] str_s = {"微信","QQ","陌陌","来往","探探",
-            "爱奇艺","优酷","腾讯视频","乐视","bilibili",
-            "凤凰","头条","网易","虎扑","天行","美团","携程","滴滴","京东","百度","腾讯","阿里" };
+    String[] str_s = {"微信", "QQ", "陌陌", "来往", "探探",
+            "爱奇艺", "优酷", "腾讯视频", "乐视", "bilibili",
+            "凤凰", "头条", "网易", "虎扑", "天行", "美团", "携程", "滴滴", "京东", "百度", "腾讯", "阿里"};
 
     private List<Fragment> mFragments;
     private String[] mTabTitles = {"消息", "好友", "动态"};
     ListView listView;
     HeaderView pullHeaderView;
     PullListView pullList;
+    RoundImageView roundImg;
     private TranslucentScrollView translucentScrollView;
+    ImageViewPager viewPager;
+    List<Integer> lst_view = new ArrayList<Integer>();
+    ImageView image1;
+    ImageView image2;
+    ImageView image3;
+    ImageView image4;
+
+    GalleyViewPager galleyViewPager;
+    private int[] rsId = new int[]{R.mipmap.f1, R.mipmap.f2, R.mipmap.f3, R.mipmap.f4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,29 +73,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FullScreenUI.FullScreenUI(this);
-  //      listView = (ListView)findViewById(R.id.lv);
-  //      ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,str_s);
-  //      listView.setAdapter(adapter);
+        //      listView = (ListView)findViewById(R.id.lv);
+        //      ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,str_s);
+        //      listView.setAdapter(adapter);
 
-        pullHeaderView  = (HeaderView)findViewById(R.id.pullHeader);
+        image1 = new ImageView(this);
+        image1.setImageResource(R.mipmap.f1);
+        image2 = new ImageView(this);
+        image2.setImageResource(R.mipmap.f2);
+        image3 = new ImageView(this);
+        image3.setImageResource(R.mipmap.f3);
+        image4 = new ImageView(this);
+        image4.setImageResource(R.mipmap.f4);
 
-        pullList = (PullListView)findViewById(R.id.pullList);
-       //
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,str_s);
-        pullList.setAdapter(adapter);
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.pp);
-        pullList.setSlideEnable(false);
-        pullList.addHeaderView(imageView);
+        for (int i = 0; i < rsId.length; i++) {
+            lst_view.add(rsId[i]);
+        }
+        viewPager = (ImageViewPager) findViewById(R.id.viewPager);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 3.0f / 5.0f);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
+        LogcatFileHelper.i("Jiong>>", "打印 viewPager 宽度：" + lp.width + "   高度：" + lp.height);
+        //viewPager.setLayoutParams(lp);
+        //   viewPager.setClipChildren(false);
+        //   viewPager.setOffscreenPageLimit(3);
+        //   viewPager.setPageMargin(100);
+        //    viewPager.setPageTransformer(true, viewPager.new GallyPageTransformer());
+        //   viewPager.init_adapter(lst_view);
 
-  //      translucentScrollView = (TranslucentScrollView)findViewById(R.id.pullzoom_scrollview);
+
+        galleyViewPager = (GalleyViewPager) findViewById(R.id.galleyViewPager);
+        galleyViewPager.setInit(lst_view);
+        galleyViewPager.setCurrentItem(1);
+
+        //      translucentScrollView = (TranslucentScrollView)findViewById(R.id.pullzoom_scrollview);
         //设置透明度变化监听
-       // translucentScrollView.setTranslucentChangedListener(this);
+        // translucentScrollView.setTranslucentChangedListener(this);
         //关联需要渐变的视图
-       // translucentScrollView.setTransView(actionBar);
+        // translucentScrollView.setTransView(actionBar);
 
         //关联伸缩的视图
- //       translucentScrollView.setPullZoomView(pullHeaderView);
+        //       translucentScrollView.setPullZoomView(pullHeaderView);
 
 
 /*
@@ -103,32 +135,31 @@ public class MainActivity extends AppCompatActivity {
         String sysModel = SystemUtil.getSysModel(); //获取系统型号
         String sysVersion = SystemUtil.getSysVersion(); //获取系统版本
         int SDKVersion = SystemUtil.getSDKVersion(); //获取sdk 版本
-        LogcatFileHelper.i("Jiong","系统型号:"+sysModel+"     系统版本:"+sysVersion+"   sdk 版本:"+SDKVersion);
+        LogcatFileHelper.i("Jiong", "系统型号:" + sysModel + "     系统版本:" + sysVersion + "   sdk 版本:" + SDKVersion);
         //2.获取屏幕尺寸 分辨率 density
         int[] screen = SystemUtil.getScreenSize(getBaseContext());
         float density = SystemUtil.getDensity(getBaseContext());
         int height = SystemUtil.getDpi(getBaseContext());
-        LogcatFileHelper.i("Jiong","系统屏幕尺寸:"+screen[0]+"    "+screen[1]+"     density:"+density+"   height:"+height);
+        LogcatFileHelper.i("Jiong", "系统屏幕尺寸:" + screen[0] + "    " + screen[1] + "     density:" + density + "   height:" + height);
         //3.获取 内存 sdcard 容量  以及 剩余容量
         String ramTotalSize = SystemUtil.getRomTotalSize(getBaseContext());
         String ramAvaSize = SystemUtil.getRomAvailableSize(getBaseContext());
         String sdcardSize = SystemUtil.getSDTotalSize(getBaseContext());
         String sdcardAvaSize = SystemUtil.getSDAvailableSize(getBaseContext());
-        LogcatFileHelper.i("Jiong","ramTotalSize:"+ramTotalSize+"     ramAvaSize:"+ramAvaSize);
-        LogcatFileHelper.i("Jiong","sdcardSize:"+sdcardSize+"     sdcardAvaSize:"+sdcardAvaSize);
+        LogcatFileHelper.i("Jiong", "ramTotalSize:" + ramTotalSize + "     ramAvaSize:" + ramAvaSize);
+        LogcatFileHelper.i("Jiong", "sdcardSize:" + sdcardSize + "     sdcardAvaSize:" + sdcardAvaSize);
         //3.是否能执行 root & exec 代码
 
     }
-
 
 
     /**
      * 初始化toolBar
      */
     private void initToolBar() {
-    //    Toolbar toolbar = (Toolbar) findViewById(R.id.tb_main);
+        //    Toolbar toolbar = (Toolbar) findViewById(R.id.tb_main);
         // 指定ToolBar的标题
-    //    toolbar.setTitle("CoordinatorLayout");
+        //    toolbar.setTitle("CoordinatorLayout");
         // 将toolBar和actionBar进行关联
 //        setSupportActionBar(toolbar);
 
@@ -143,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment3 foundFragment = new Fragment3();
         // 将三个fragment放入List里面管理，方便使用
         mFragments = new ArrayList<>();
-        mFragments.add( msgFragment);
+        mFragments.add(msgFragment);
         mFragments.add(friendFragment);
         mFragments.add(foundFragment);
     }
@@ -176,20 +207,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    /** Handler 为避免 非静态内部类 内存泄漏  使用规范：
-     *  1.如下定义 UIHandler 类
-     *  2.实例化  在OnCreate(){ mUIHandler = new UIHandler(Looper.getMainLooper(), this);   }   //碎片时 onActivityCreated()中
-     *  3.在页面销毁 中 移除所有消息    mUIHandler.removeCallbacksAndMessages(null);
-     *
-     *  同理 可以使用于 碎片fragment中，将 Activity 换成 fragment
+    /**
+     * Handler 为避免 非静态内部类 内存泄漏  使用规范：
+     * 1.如下定义 UIHandler 类
+     * 2.实例化  在OnCreate(){ mUIHandler = new UIHandler(Looper.getMainLooper(), this);   }   //碎片时 onActivityCreated()中
+     * 3.在页面销毁 中 移除所有消息    mUIHandler.removeCallbacksAndMessages(null);
+     * <p>
+     * 同理 可以使用于 碎片fragment中，将 Activity 换成 fragment
      */
 
     private UIHandler mUIHandler;
-    private  static class UIHandler extends Handler {
+
+    private static class UIHandler extends Handler {
         //定义 弱应用
         private WeakReference<Activity> weakReference;
-        public UIHandler(Looper looper, Activity activity){
+
+        public UIHandler(Looper looper, Activity activity) {
             super(looper);
             weakReference = new WeakReference<Activity>(activity);
         }
@@ -198,15 +231,16 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             //判断 引用的 activity或 碎片 是否还存在
-            if(weakReference == null && weakReference.get() == null){
+            if (weakReference == null && weakReference.get() == null) {
                 return;
             }
             Activity activity = weakReference.get();
             //开始 消息 业务判断
-            switch(msg.what){
+            switch (msg.what) {
                 case 1:
                     break;
-                default:break;
+                default:
+                    break;
             }
         }
     }
@@ -218,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
      */
 
     protected HandlerThread mWorker;
+
     public Looper getWorkLooper() {
         if (mWorker == null) {
             mWorker = new HandlerThread("class.name", getWorkLooperThreadPriority());
@@ -230,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
         return Process.THREAD_PRIORITY_BACKGROUND;
     }
 
-    private void OnWorkLooperDestory(){
+    private void OnWorkLooperDestory() {
         // 停止后台线程
         if (mWorker != null)
             mWorker.quit();

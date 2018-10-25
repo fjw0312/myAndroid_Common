@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -31,11 +32,11 @@ import com.MyApplication;
 
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
- *  使用方式：MyApplication.oncreate 添加2句   就Ok
-    CrashHandler crashHandler = CrashHandler.getInstance();
-    crashHandler.init(getApplicationContext());
- * @author user
+ * 使用方式：MyApplication.oncreate 添加2句   就Ok
+ * CrashHandler crashHandler = CrashHandler.getInstance();
+ * crashHandler.init(getApplicationContext());
  *
+ * @author user
  */
 @SuppressLint("SdCardPath")
 public class CrashHandler implements UncaughtExceptionHandler {
@@ -56,15 +57,22 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private static final Map<String, String> regexMap = new HashMap<String, String>();
     // 用于格式化日期,作为日志文件名的一部分
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.CHINA);
-    /** 保证只有一个 CrashHandler 实例 */
+
+    /**
+     * 保证只有一个 CrashHandler 实例
+     */
     private CrashHandler() {
 //
     }
-    /** 获取 CrashHandler 实例 ,单例模式 */
+
+    /**
+     * 获取 CrashHandler 实例 ,单例模式
+     */
     public static CrashHandler getInstance() {
         initMap();
         return INSTANCE;
     }
+
     /**
      * 初始化
      *
@@ -78,13 +86,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
         Log.d(TAG, "Crash:init");
     }
+
     /**
      * 当 UncaughtException 发生时会转入该函数来处理
      */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         if (!handleException(ex) && mDefaultHandler != null) {
-        // 如果用户没有处理则让系统默认的异常处理器来处理
+            // 如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
             Log.d(TAG, "defalut");
         } else {
@@ -95,10 +104,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());
-          // mDefaultHandler.uncaughtException(thread, ex);
+            // mDefaultHandler.uncaughtException(thread, ex);
             System.exit(1);
         }
     }
+
     /**
      * 自定义错误处理，收集错误信息，发送错误报告等操作均在此完成
      *
@@ -109,12 +119,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
         if (ex == null) {
             return false;
         }
-    // 收集设备参数信息
-    // collectDeviceInfo(mContext);
-    // 保存日志文件
+        // 收集设备参数信息
+        // collectDeviceInfo(mContext);
+        // 保存日志文件
         saveCrashInfoFile(ex);
-    //网络上传 异常  （未实现）
-    // 使用 Toast 来显示异常信息
+        //网络上传 异常  （未实现）
+        // 使用 Toast 来显示异常信息
         new Thread() {
             @Override
             public void run() {
@@ -125,6 +135,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         }.start();
         return true;
     }
+
     /**
      * 收集设备参数信息
      *
@@ -156,11 +167,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
         }
     }
+
     /**
      * 保存错误信息到文件中 *
      *
      * @param ex
-     * @return 返回文件名称,便于将文件传送到服务器
+     * @return 返回文件名称, 便于将文件传送到服务器
      */
     private String saveCrashInfoFile(Throwable ex) {
         StringBuffer sb = getTraceInfo(ex);
@@ -179,7 +191,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
-            if (Environment.getExternalStorageState().equals( Environment.MEDIA_MOUNTED)) {
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 path = MyApplication.SAVE_FILE_PATH + MyApplication.CRASH_DIR;  //保存 异常文件路劲
                 File dir = new File(path);
                 if (!dir.exists()) {
@@ -195,8 +207,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
         }
         return null;
     }
+
     /**
      * 整理异常信息
+     *
      * @param e
      * @return
      */
@@ -216,23 +230,26 @@ public class CrashHandler implements UncaughtExceptionHandler {
         Log.d(TAG, sb.toString());
         return sb;
     }
+
     /**
      * 设置错误的提示语
+     *
      * @param e
      */
     public static void setError(String e) {
         Pattern pattern;
         Matcher matcher;
         for (Entry<String, String> m : regexMap.entrySet()) {
-            Log.d(TAG, e+"key:" + m.getKey() + "; value:" + m.getValue());
+            Log.d(TAG, e + "key:" + m.getKey() + "; value:" + m.getValue());
             pattern = Pattern.compile(m.getKey());
             matcher = pattern.matcher(e);
-            if(matcher.matches()){
+            if (matcher.matches()) {
                 error = m.getValue();
                 break;
             }
         }
     }
+
     /**
      * 初始化错误的提示语
      */

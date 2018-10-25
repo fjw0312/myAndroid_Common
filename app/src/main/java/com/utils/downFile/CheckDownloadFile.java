@@ -9,7 +9,7 @@ import java.io.File;
  * 检测 下载文件完整性
  */
 public class CheckDownloadFile {
-    private static  final String TAG = "Jiong>>CheckDownloadFile";
+    private static final String TAG = "Jiong>>CheckDownloadFile";
 
     /**
      * 检查文件完整性，并通知UI线程（如果有更新则保存配置）
@@ -26,7 +26,7 @@ public class CheckDownloadFile {
             LogcatFileHelper.i(TAG, "文件md5值：" + md5 + "    计算的md5值:" + tmd5);
             boolean isOk = md5.equals(tmd5);
             if (isOk) {
-              return true;
+                return true;
             } else {
                 //如果校验不合法，则删掉已下载的文件
                 LogcatFileHelper.i(TAG, "文件校验不通过，删除已下载文件...");

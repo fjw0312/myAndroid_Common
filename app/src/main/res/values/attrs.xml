@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BorderRoundImageView">
+        <attr name="type" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="circle" value="1"/>
+            <enum name="rounded_rect" value="2"/>
+        </attr>
+        <attr name="borderColor" format="integer"/>
+        <attr name="myborderWidth" format="integer"/>
+        <attr name="rectRoundRadius" format="integer"/>
+        <attr name="square" format="boolean"/>
+    </declare-styleable>
+</resources>

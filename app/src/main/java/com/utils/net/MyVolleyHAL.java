@@ -39,7 +39,7 @@ public class MyVolleyHAL {
                 new Response.ErrorListener() {//重写  volley.onErrorResponse.onResponse
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        Log.w("MyVolleyHAL>","getString_Volley_Get>字符接收异常！");
+                        Log.w("MyVolleyHAL>", "getString_Volley_Get>字符接收异常！");
                     }
                 });
         //3. 请求数据对象 添加到Queue
@@ -49,12 +49,12 @@ public class MyVolleyHAL {
     }
 
     // 获取  Http Get方法 JSONObject
-    public static JSONObject getJsonObject_Volley_Get(Context context, String strUrl){
+    public static JSONObject getJsonObject_Volley_Get(Context context, String strUrl) {
         //1.创建 RequestQueue
         RequestQueue mQueue = MyVolleyRequestQueue.instance(context); //  RequestQueue mQueue = Volley.newRequestQueue(context);
         //2.创建 JsonObjectRequest
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(strUrl, jsonObject,
-                new myRequestListener(), new myRequestErrorListener() );
+                new myRequestListener(), new myRequestErrorListener());
         //3. 请求数据对象 添加到Queue
         mQueue.add(jsonObjectRequest);
 
@@ -63,9 +63,9 @@ public class MyVolleyHAL {
 
     //获取 Http Get方法   ImageLoader
     public static ImageLoader getImageLoader_Volley_Get(Context context, String strUrl,
-      ImageView imageView,int defaultImageResId,int errorImageResId,int maxWidth,int maxHeight){
+                                                        ImageView imageView, int defaultImageResId, int errorImageResId, int maxWidth, int maxHeight) {
         //1.创建 RequestQueue
-        RequestQueue mQueue =  MyVolleyRequestQueue.instance(context);
+        RequestQueue mQueue = MyVolleyRequestQueue.instance(context);
         //2.创建 ImageLoader
         ImageLoader myImageLoader = new ImageLoader(mQueue, new MyImageCache());
         //ImageLoader imageLoader = myImageLoader;     //使用提前 定义的 图片接收器
@@ -83,10 +83,11 @@ public class MyVolleyHAL {
             jsonObject = response;
         }
     }
+
     private static class myRequestErrorListener implements Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
-            Log.w("MyVolleyHAL>","getJsonObject_Volley_Get>接收异常！");
+            Log.w("MyVolleyHAL>", "getJsonObject_Volley_Get>接收异常！");
         }
     }
 

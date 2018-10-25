@@ -27,9 +27,8 @@ public class GetProcessAPP {
      * 这个方法获取最近运行任何中最上面的一个应用的包名,<br>
      * 进行了api版本的判断,然后利用不同的方法获取包名,具有兼容性
      *
-     * @param context
-     *            上下文对象
-     * @return 返回包名,如果出现异常或者获取失败返回""
+     * @param context 上下文对象
+     * @return 返回包名, 如果出现异常或者获取失败返回""
      */
     public static String getTopAppInfoPackageName(Context context) {
         if (Build.VERSION.SDK_INT < 21) { // 如果版本低于22

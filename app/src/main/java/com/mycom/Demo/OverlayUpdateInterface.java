@@ -10,16 +10,16 @@ import com.viewbase.OverlaysBaseView;
 
 /**
  * Created by jiongfang on 2018/3/28.
- *  固件更新提示
- *  该视图实例化  必须在MainThread
+ * 固件更新提示
+ * 该视图实例化  必须在MainThread
  */
 public class OverlayUpdateInterface {
 
-    private final static  String TAG = "OverlayUpdateInterface";
+    private final static String TAG = "OverlayUpdateInterface";
     private OverlaysBaseView overlaysBaseView;
 
 
-    public OverlayUpdateInterface(){
+    public OverlayUpdateInterface() {
         initView();
     }
 
@@ -28,14 +28,14 @@ public class OverlayUpdateInterface {
     TextView ok;
     //Handler UiHandler = new Hamdler(){}
 
-    private void initView(){
+    private void initView() {
         overlaysBaseView = new OverlaysBaseView(MyApplication.getContext());
-        overlaysBaseView.setUpView(R.layout.overlay_update,new OverlaysBaseView.FindViewInterface() {
+        overlaysBaseView.setUpView(R.layout.overlay_update, new OverlaysBaseView.FindViewInterface() {
             @Override
             public void OnFindViewById(View view) {
-                layout = (LinearLayout)view.findViewById(R.id.update_lay);
-                cancel = (TextView)view.findViewById(R.id.update_cancel);
-                ok = (TextView)view.findViewById(R.id.update_ok);
+                layout = (LinearLayout) view.findViewById(R.id.update_lay);
+                cancel = (TextView) view.findViewById(R.id.update_cancel);
+                ok = (TextView) view.findViewById(R.id.update_ok);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -32,13 +32,14 @@ public class Fragment3 extends FragmentLazy {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_base, container, false);
-        Log.i("Class1Fragment","intio onCreateView");
+        View view = inflater.inflate(R.layout.fragment_base, container, false);
+        Log.i("Class1Fragment", "intio onCreateView");
 
         return view;
     }
 
     private Activity mActivity;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

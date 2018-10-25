@@ -41,27 +41,27 @@ public class SystemToastBase {
 
     private View mView;
 
-    public SystemToastBase(Context context){
+    public SystemToastBase(Context context) {
         mContext = context;
         mToast = new Toast(mContext);
     }
 
-    public void setGravity(int gravity,int xOffset,int yOffset){
+    public void setGravity(int gravity, int xOffset, int yOffset) {
         mGravity = gravity;
         mXOffset = xOffset;
         mYOffset = yOffset;
     }
 
-    public void setSize(int height,int width){
+    public void setSize(int height, int width) {
         mHeight = height;
         mWidth = width;
     }
 
-    private void initSystemToast(){
+    private void initSystemToast() {
         try {
-            Field tnField =mToast.getClass().getDeclaredField("mTN");
+            Field tnField = mToast.getClass().getDeclaredField("mTN");
             tnField.setAccessible(true);
-            mToast.setGravity(mGravity,mXOffset,mYOffset);
+            mToast.setGravity(mGravity, mXOffset, mYOffset);
 
             mTN = tnField.get(mToast);
             mShowMethod = mTN.getClass().getMethod("show");
@@ -84,36 +84,37 @@ public class SystemToastBase {
     }
 
     private FindViewInterface findViewInterface;
-    public interface FindViewInterface{
+
+    public interface FindViewInterface {
         public void OnFindViewById(View view);
     }
 
     //添加视图布局
-    public View setUpView(int layout_id, FindViewInterface findViewInterface){ //获得 控件 并 操作
+    public View setUpView(int layout_id, FindViewInterface findViewInterface) { //获得 控件 并 操作
         mView = LayoutInflater.from(mContext).inflate(layout_id, null);
         this.findViewInterface = findViewInterface;
-        if(this.findViewInterface!=null){
+        if (this.findViewInterface != null) {
             this.findViewInterface.OnFindViewById(mView);
         }
         return mView;
     }
 
     //显示 浮窗视图
-    public void showToastView(){
-        if(mView!=null){
-        }else{
+    public void showToastView() {
+        if (mView != null) {
+        } else {
             mView = LayoutInflater.from(mContext).inflate(R.layout.overlay_demo, null);
         }
         addView(mView);
     }
+
     // 关闭 浮窗
-    public void removeToastView(){
+    public void removeToastView() {
         removeView();
     }
 
 
-
-    public void addView(View view){
+    public void addView(View view) {
         if (isShow) return;
 
         initSystemToast();
@@ -122,11 +123,11 @@ public class SystemToastBase {
             /**调用tn.mShowMethod()之前一定要先设置mNextView*/
             Field tnNextViewField = mTN.getClass().getDeclaredField("mNextView");
             tnNextViewField.setAccessible(true);
-            tnNextViewField.set(mTN,mToast.getView());
+            tnNextViewField.set(mTN, mToast.getView());
             mShowMethod.invoke(mTN);
             isShow = true;
             mView = view;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -164,11 +165,13 @@ public class SystemToastBase {
         mDismissHandler.removeCallbacks(mDismissRunnable);
         mDismissHandler.postDelayed(mDismissRunnable, delayMs);
     }
+
     //隐藏浮窗
     public void dismissToast() {
         mDismissHandler.removeCallbacks(mDismissRunnable);
         mDismissHandler.post(mDismissRunnable);
     }
+
     private Handler mDismissHandler = new Handler();
     private Runnable mDismissRunnable = new Runnable() {
         @Override
