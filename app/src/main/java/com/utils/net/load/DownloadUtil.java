@@ -32,17 +32,17 @@ public class DownloadUtil {
     public final static String USER_AGENT = "K9_update"; //网络连接参数
     public final static int  TIME_OUT = 5*1000;   //网络超时
 
+
     private static final String SaveMD5 = "k9_Save_downloadInfo"; //用于保存下载的md5
     private static final String SaveMD5Key = "k9_Save_downloadInfo_key_md5_info";
     private static final String PREFRENCE_FILE = "k9_downloadInfo"; //用于保存在下载过程中的md5 用于 断点续传
     private static final String KEY_MD5_INFO = "k9_downloadInfo_key_md5_info";
 
     public static boolean isDownloading = false;
-    private static long oldDownloadPos = 0 ;
+    private static long oldDownloadPos = 0;
     private static String TAG = "DownloadUtil";
     public static int progress = -1;
-    private static DownloadChangedListener listener ;
-
+    private static DownloadChangedListener listener;
 
 
     /**
@@ -55,7 +55,7 @@ public class DownloadUtil {
     private static boolean httpDownload(String httpUrl, String saveFile) {
         // 下载网络文件
         int byteread = 0;
-        LogcatFileHelper.i("Jiong"+TAG,"into httpDownload");
+        LogcatFileHelper.i("Jiong" + TAG, "into httpDownload");
         URL url = null;
         try {
             url = new URL(httpUrl);
@@ -71,44 +71,44 @@ public class DownloadUtil {
             conn.setRequestProperty("User-Agent",  USER_AGENT);
             conn.setConnectTimeout(TIME_OUT); // 设置连接超时
             conn.setRequestProperty("Connection", "Keep-Alive");
-            if(oldDownloadPos!= 0) {
+            if (oldDownloadPos != 0) {
                 conn.setRequestProperty("Range", "bytes=" + oldDownloadPos + "-");
             }
-            conn .setRequestProperty("Accept-Encoding", "identity");
+            conn.setRequestProperty("Accept-Encoding", "identity");
 
             conn.connect();
             String length = conn.getHeaderField("content-length");
-            double total = Long.valueOf(length)+oldDownloadPos;
-            Log.d(TAG,"length:"+total);
+            double total = Long.valueOf(length) + oldDownloadPos;
+            Log.d(TAG, "length:" + total);
 
             inStream = conn.getInputStream();
             File f = new File(saveFile);
-            if(f == null && !f.exists()){
+            if (f == null && !f.exists()) {
                 f.createNewFile();
             }
-            fs = new RandomAccessFile(saveFile,"rw");
-            if(oldDownloadPos>0) {
+            fs = new RandomAccessFile(saveFile, "rw");
+            if (oldDownloadPos > 0) {
                 fs.seek(oldDownloadPos);
             }
             byte[] buffer = new byte[1024];
             while ((byteread = inStream.read(buffer)) != -1) {
                 fs.write(buffer, 0, byteread);
-                int temp = (int)(100*fs.length()/total);
-                if(temp != progress) {
+                int temp = (int) (100 * fs.length() / total);
+                if (temp != progress) {
                     progress = temp;
-                    if(listener != null){
+                    if (listener != null) {
                         listener.onProgress(progress);
                     }
                 }
                 try {
                     Thread.sleep(1);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
 
                 }
 
             }
             StateInfoPersist.setDownloadMD5Info("");
-            progress = -1 ;
+            progress = -1;
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -145,20 +145,21 @@ public class DownloadUtil {
             }
         }
     }
+
     //计算 下载文件大小
     private static long calculateDownloadFileSize(){
         File file = new File(UPDATE_ZIP_FILE);
-        if(file != null && file.exists()){
+        if (file != null && file.exists()) {
             return file.length();
         }
 
-        return 0 ;
+        return 0;
     }
 
     /**
      * 下载固件的时间点，限定在0点-8点之间,如果有下载记录则续传
      */
-    public static boolean canAutoDownload(){
+    public static boolean canAutoDownload() {
 
         /*Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
@@ -238,15 +239,16 @@ public class DownloadUtil {
             return -1;
         }
         isDownloading = true;
-        LogcatFileHelper.i("Jiong"+TAG,"into startDownload");
+        LogcatFileHelper.i("Jiong" + TAG, "into startDownload");
         String downloadMD5 = StateInfoPersist.getDownloadMD5Info();
 
         oldDownloadPos  = 0 ;
+
         if (downloadMD5 != null) {
-            if (downloadMD5.equals(md5)){
+            if (downloadMD5.equals(md5)) {
                 //这次下载的文件跟上次下载的一致，做断点续传
                 oldDownloadPos = calculateDownloadFileSize();
-            }else{
+            } else {
                 deleteDownloadFile();
             }
         } else {
@@ -259,7 +261,7 @@ public class DownloadUtil {
             @Override
             public void run() {
                 File dir = new File(UPDATE_ZIP_DIR);
-                if(dir == null || !dir.exists()){
+                if (dir == null || !dir.exists()) {
                     dir.mkdirs();
                 }
                 boolean result = httpDownload(url, UPDATE_ZIP_FILE);
@@ -281,8 +283,27 @@ public class DownloadUtil {
     }
 
 
+    private static class StateInfoPersist {
+
+
+        public static void setDownloadMD5Info(String md5) {
+            if (md5 == null) {
+                return;
+            }
+            MyApplication.getContext().getSharedPreferences(MD5_SHAREPERF_FILE_NAME, Context.MODE_PRIVATE).edit()
+                    .putString(KEY_MD5_INFO, md5).commit();
+        }
+
+        public static String getDownloadMD5Info() {
+            return MyApplication.getContext().getSharedPreferences(MD5_SHAREPERF_FILE_NAME, Context.MODE_PRIVATE).getString(KEY_MD5_INFO, "");
+        }
+    }
+
+
+
     public interface DownloadChangedListener {
         void onDonwloadComplete(boolean result, String path);
+
         void onProgress(int progress);
     }
 

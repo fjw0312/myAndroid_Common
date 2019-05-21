@@ -4,7 +4,9 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.net.SocketTimeoutException;
+
 
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -73,6 +75,7 @@ public class OkHttpHAL {
             client.connectionPool().evictAll();
             //TODO: 重新请求
             e.printStackTrace();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

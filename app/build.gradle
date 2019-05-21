@@ -57,6 +57,7 @@ dependencies {
     //条形码 二维码 框架依赖
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
 
+
     //Excel xls 框架依赖  --读写表格特别缓慢
     compile 'me.zhouzhuo.zzexcelcreator:zz-excel-creator:1.0.0'
 
@@ -74,4 +75,6 @@ dependencies {
 
     //多功能视频播放器 vitamio
     compile 'com.charonchui.vitamio:vitamio:4.2.2'
+
+
 }
