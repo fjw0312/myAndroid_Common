@@ -13,11 +13,11 @@ import com.mycom.R;
 
 /**
  * Created by fjw0312 on 2017/10/10.
- *  碎片 自定义 懒加载基础类
- *  特别：碎片不拍被提前 初始化预加载，不耗时 不耗内存
- *       只当碎片显示时，才延时加载更新数据。
- *       只需继承后，重写 lazyLaod()、stopLoad()、onCreateView();
- *       延时显示后才延时操作放在lazyLaod()、 预加载就执行放在onCreateView()若不需任何控件初始化可设备layout id后不重写。
+ * 碎片 自定义 懒加载基础类
+ * 特别：碎片不拍被提前 初始化预加载，不耗时 不耗内存
+ * 只当碎片显示时，才延时加载更新数据。
+ * 只需继承后，重写 lazyLaod()、stopLoad()、onCreateView();
+ * 延时显示后才延时操作放在lazyLaod()、 预加载就执行放在onCreateView()若不需任何控件初始化可设备layout id后不重写。
  */
 
 public class FragmentLazy extends Fragment {
@@ -29,53 +29,55 @@ public class FragmentLazy extends Fragment {
 
 
     //构造
-    public FragmentLazy(){
+    public FragmentLazy() {
         super();
     }
 
-/*
-     //   外部传参数  --可直接调用newInstance
-     //        Bundle bundle = new Bundle();
-     //       bundle.putInt("key", img_src_s[i]);
-     //        myFragment.setArguments(bundle);
-    //实例化 并传参数  ----方便实例化 与传参
-    public static MyFragmentLazy newInstance(int arg){
-        MyFragmentLazy fragment = new MyFragmentLazy();
-        Bundle bundle = new Bundle();
-        bundle.putInt("key", arg);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-    public static MyFragmentLazy newInstance(String argc){
-        MyFragmentLazy fragment = new MyFragmentLazy();
-        Bundle bundle = new Bundle();
-        bundle.putString("key", argc);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-*/
+    /*
+         //   外部传参数  --可直接调用newInstance
+         //        Bundle bundle = new Bundle();
+         //       bundle.putInt("key", img_src_s[i]);
+         //        myFragment.setArguments(bundle);
+        //实例化 并传参数  ----方便实例化 与传参
+        public static MyFragmentLazy newInstance(int arg){
+            MyFragmentLazy fragment = new MyFragmentLazy();
+            Bundle bundle = new Bundle();
+            bundle.putInt("key", arg);
+            fragment.setArguments(bundle);
+            return fragment;
+        }
+        public static MyFragmentLazy newInstance(String argc){
+            MyFragmentLazy fragment = new MyFragmentLazy();
+            Bundle bundle = new Bundle();
+            bundle.putString("key", argc);
+            fragment.setArguments(bundle);
+            return fragment;
+        }
+    */
     //判断是否加载  数据
-    protected void isCanLoadData(){
-        if(!isInit) return;  //未初始化 不处理
-        if(getUserVisibleHint()){  //初始化 并 碎片可见
+    protected void isCanLoadData() {
+        if (!isInit) return;  //未初始化 不处理
+        if (getUserVisibleHint()) {  //初始化 并 碎片可见
             isVisible = true;
             //处理碎片可见 数据
             lazyLoad();
-        }else{
+        } else {
             isVisible = false;
             //处理碎片不可见  数据终止
             stopLoad();
         }
     }
+
     //加载数据
-    protected void lazyLoad(){
+    protected void lazyLoad() {
         //获取相关数据
-       // int src_id = (int)getArguments().get("key");
+        // int src_id = (int)getArguments().get("key");
 
 
     }
+
     //停止加载数据
-    protected void stopLoad(){
+    protected void stopLoad() {
 
     }
 
@@ -95,12 +97,13 @@ public class FragmentLazy extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R_ly_id, container, false);
+        View view = inflater.inflate(R_ly_id, container, false);
         //初始化控件  初始化赋值
         //imageView = (ImageView)view.findViewById(R.id.img_id);
 
         return view;
     }
+
     /*     外部传参数  --可直接调用newInstance
             Bundle bundle = new Bundle();
             bundle.putInt("key", img_src_s[i]);

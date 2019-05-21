@@ -20,7 +20,7 @@ import com.utils.LogcatFileHelper;
  */
 public class SystemDialogBase {
 
-    public SystemDialogBase(Context context){
+    public SystemDialogBase(Context context) {
         mContext = context;
 
     }
@@ -29,28 +29,35 @@ public class SystemDialogBase {
     private int Height = 0;
     private int x = -1;
     private int y = 0;
-    public void setDialogWidth(int Width){
+
+    public void setDialogWidth(int Width) {
         this.Width = Width;
     }
-    public void setDialogHeight(int Height){
+
+    public void setDialogHeight(int Height) {
         this.Height = Height;
     }
-    public void setDialogWidthHeight(int Width,int Height){
+
+    public void setDialogWidthHeight(int Width, int Height) {
         this.Width = Width;
         this.Height = Height;
     }
-    public void setX(int x){
+
+    public void setX(int x) {
         this.x = x;
     }
-    public void setY(int y){
+
+    public void setY(int y) {
         this.y = y;
     }
-    public void setXY(int x, int y){
+
+    public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
     private AlertDialog alert;
-    public  boolean isShow = false;
+    public boolean isShow = false;
 
     private static final String TAG = "SystemDialogBase";
     private Context mContext;
@@ -61,47 +68,47 @@ public class SystemDialogBase {
     WindowManager windowManager;
 
     //初始化 浮窗
-    private void initOverlaysView(View addView){
+    private void initOverlaysView(View addView) {
         // alert =  new AlertDialog.Builder(mContext, R.style.sysDialog).setView(mView).setCancelable(true).create();
-        alert =  new AlertDialog.Builder(mContext).setView(mView).setCancelable(true).create();
+        alert = new AlertDialog.Builder(mContext).setView(mView).setCancelable(true).create();
         alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 isShow = false;
-                LogcatFileHelper.w("Jiong>>"+TAG,"alert>>>onDismiss  去除浮窗！");
+                LogcatFileHelper.w("Jiong>>" + TAG, "alert>>>onDismiss  去除浮窗！");
             }
         });
         //  alert.getWindow().setDimAmount(0);//设置昏暗度为0
         alert.getWindow().setBackgroundDrawableResource(R.color.transparent);
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        alert.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        alert.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         alert.show();
 
         //设置对话框尺寸
         Window window = alert.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        if(x != -1 && y != -1){
+        if (x != -1 && y != -1) {
             lp.x = x;
             lp.y = y;
-            lp.gravity = Gravity.LEFT|Gravity.TOP;
-        }else if(x != -1 && y == -1){
+            lp.gravity = Gravity.LEFT | Gravity.TOP;
+        } else if (x != -1 && y == -1) {
             lp.x = x;
-            lp.gravity = Gravity.LEFT|Gravity.CENTER_VERTICAL;
-        }else if(x == -1 && y != -1){
+            lp.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+        } else if (x == -1 && y != -1) {
             lp.y = y;
-            lp.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
-        }else{
+            lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        } else {
             lp.gravity = Gravity.CENTER;
         }
 
 
-        if(Width != 0  && Height != 0){
-            lp.width  = Width;
+        if (Width != 0 && Height != 0) {
+            lp.width = Width;
             lp.height = Height;
-        }else if(Width != 0  && Height == 0){
+        } else if (Width != 0 && Height == 0) {
             lp.width = Width;
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        }else if(Width == 0 && Height != 0){
+        } else if (Width == 0 && Height != 0) {
             lp.width = WindowManager.LayoutParams.WRAP_CONTENT;//宽高可设置具体大小
             lp.height = Height;
         }
@@ -111,43 +118,48 @@ public class SystemDialogBase {
     }
 
     //添加视图布局
-    public View setUpView(int layout_id,FindViewInterface findViewInterface){ //获得 控件 并 操作
+    public View setUpView(int layout_id, FindViewInterface findViewInterface) { //获得 控件 并 操作
         mView = LayoutInflater.from(mContext).inflate(layout_id, null);
         this.findViewInterface = findViewInterface;
-        if(this.findViewInterface!=null){
+        if (this.findViewInterface != null) {
             this.findViewInterface.OnFindViewById(mView);
         }
         return mView;
     }
+
     //显示 浮窗视图
-    public void showOverlayView(){
-        if(mView!=null){
+    public void showOverlayView() {
+        if (mView != null) {
             initOverlaysView(mView);
         }
     }
 
     private FindViewInterface findViewInterface;
-    public interface FindViewInterface{
+
+    public interface FindViewInterface {
         public void OnFindViewById(View view);
     }
 
     // 关闭 浮窗
-    public void removeOverlays(){
+    public void removeOverlays() {
         isShow = false;
-        if(alert !=  null){
+        if (alert != null) {
             alert.dismiss();
         }
     }
+
     //隐藏浮窗
     public void dismissDelayDialog(int delayMs) {
         mDismissHandler.removeCallbacks(mDismissRunnable);
         mDismissHandler.postDelayed(mDismissRunnable, delayMs);
     }
+
     //隐藏浮窗
     public void dismissDialog() {
         mDismissHandler.removeCallbacks(mDismissRunnable);
         mDismissHandler.post(mDismissRunnable);
     }
+
     private Handler mDismissHandler = new Handler();
     private Runnable mDismissRunnable = new Runnable() {
         @Override

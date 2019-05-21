@@ -16,21 +16,20 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 /**
  * 上下拉刷新  框架 SmartRefreshLayout  默认  BezierRadarHeader（贝塞尔雷达） Header
- *
- * */
+ */
 public class Page1Activity extends AppCompatActivity {
 
-    Button  Bn_pre;
-    Button  Bn_next;
+    Button Bn_pre;
+    Button Bn_next;
     SmartRefreshLayout smartRefreshLayout;
 
     private View.OnClickListener l = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(v==Bn_pre){
+            if (v == Bn_pre) {
                 Intent intent = new Intent(Page1Activity.this, Page3Activity.class);
                 startActivity(intent);
-            }else if(v==Bn_next){
+            } else if (v == Bn_next) {
                 Intent intent = new Intent(Page1Activity.this, Page2Activity.class);
                 startActivity(intent);
             }
@@ -42,11 +41,11 @@ public class Page1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pull_refresh1);
 
-        Bn_pre = (Button)findViewById(R.id.Bn_pre);
-        Bn_next = (Button)findViewById(R.id.Bn_next);
+        Bn_pre = (Button) findViewById(R.id.Bn_pre);
+        Bn_next = (Button) findViewById(R.id.Bn_next);
         Bn_pre.setOnClickListener(l);
         Bn_next.setOnClickListener(l);
-        smartRefreshLayout = (SmartRefreshLayout)findViewById(R.id.refreshLayout);
+        smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
         smartRefreshLayout.setPrimaryColors(Color.BLUE);  //设置 主题颜色
         smartRefreshLayout.setHeaderHeight(80);
 
@@ -54,7 +53,7 @@ public class Page1Activity extends AppCompatActivity {
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                Log.i("onRefresh","进入 刷新");
+                Log.i("onRefresh", "进入 刷新");
                 refreshlayout.finishRefresh(2000);  //2000ms
             }
         });
@@ -62,7 +61,7 @@ public class Page1Activity extends AppCompatActivity {
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                Log.i("onRefresh","进入 下载");
+                Log.i("onRefresh", "进入 下载");
                 refreshlayout.finishLoadmore(2000);//2000ms
             }
         });

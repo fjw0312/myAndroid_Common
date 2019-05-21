@@ -19,7 +19,7 @@ public class SlideLayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slidelayout);
 
-        slidelayout = (SlideLayout)findViewById(R.id.slidelayout);
+        slidelayout = (SlideLayout) findViewById(R.id.slidelayout);
         slidelayout.setOnSildingFinishListener(new SlideLayout.OnSildingFinishListener() {
             @Override
             public void onSildingFinish() {

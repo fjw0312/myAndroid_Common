@@ -16,9 +16,10 @@ import android.widget.ScrollView;
 
 import com.mycom.R;
 
-/**   scrollView顶部伸缩  控制渐变 自定义组件
+/**
+ * scrollView顶部伸缩  控制渐变 自定义组件
  * 类功能描述：</br>
- *  Android沉浸式状态栏 + scrollView顶部伸缩 + actionBar渐变
+ * Android沉浸式状态栏 + scrollView顶部伸缩 + actionBar渐变
  * 博客地址：http://blog.csdn.net/androidstarjack
  */
 public class TranslucentScrollView extends ScrollView {
@@ -213,7 +214,6 @@ public class TranslucentScrollView extends ScrollView {
 
         return super.onTouchEvent(event);
     }
-
 
 
     public static int dip2px(Context context, float dpValue) {

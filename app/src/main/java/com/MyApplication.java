@@ -15,36 +15,36 @@ import com.utils.LogcatFileHelper;
  *     android:name="com.MyApplication"
  * use: MyApplication.getContext();
  * */
-public class MyApplication extends Application{  
-	private static Context context;
-	public  static String SAVE_FILE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-	public  static String DATA_DIR = "Data/";
-	public  static String CRASH_DIR = "Crash/";
-	public  static String CACHE_DIR = "Cache/";
-	public  static String LOADED_DIR = "Doaded/";
+public class MyApplication extends Application {
+    private static Context context;
+    public static String SAVE_FILE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+    public static String DATA_DIR = "Data/";
+    public static String CRASH_DIR = "Crash/";
+    public static String CACHE_DIR = "Cache/";
+    public static String LOADED_DIR = "Doaded/";
 
 
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
-		context = getApplicationContext();
-		SAVE_FILE_PATH = SAVE_FILE_PATH+getPackageName()+"/";
+    @Override
+    public void onCreate() {
+        // TODO Auto-generated method stub
+        super.onCreate();
+        context = getApplicationContext();
+        SAVE_FILE_PATH = SAVE_FILE_PATH + getPackageName() + "/";
 
-		//初始化crash 异常捕获
+        //初始化crash 异常捕获
 //		CrashHandler crashHandler = CrashHandler.getInstance();
 //		crashHandler.init(getApplicationContext());
-		//初始化 日志打印
+        //初始化 日志打印
 
-		//boolean enableLog = BuildConfig.DEBUG;
-		boolean enableLog = BuildConfig.ENABLE_LOG;  //日志打开开关 等于编译变量
-		new LogcatFileHelper(enableLog,false,2);
+        //boolean enableLog = BuildConfig.DEBUG;
+        boolean enableLog = BuildConfig.ENABLE_LOG;  //日志打开开关 等于编译变量
+        new LogcatFileHelper(enableLog, false, 2);
 
-	}
+    }
 
-	//获取 context
-	public static Context getContext(){
-		return context;
-	}
+    //获取 context
+    public static Context getContext() {
+        return context;
+    }
 
 }

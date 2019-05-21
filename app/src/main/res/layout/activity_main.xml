@@ -1,110 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.mycom.MainActivity">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             tools:context="com.mycom.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="My Com APP"
-        android:textSize="30sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="My Com APP"
+            android:textSize="30sp"/>
 
 
     <Button
-        android:id="@+id/Bn_start"
-        android:layout_marginTop="1000px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="start TestActivity"/>
+            android:id="@+id/Bn_start"
+            android:visibility="gone"
+            android:layout_marginTop="1000px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="start TestActivity"/>
 
 
-        <LinearLayout
+    <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/viewPagerContainer"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="800px">
-            <com.views.HeaderView
-                android:id="@+id/pullHeader"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
+        <!-- 前天 父view 需要设置 clipChildren="false-->
+        <com.views.ImageViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/switch_pg"/>
-            <com.views.PullListView
-                android:id="@+id/pullList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.views.PullListView>
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="400px"
+                android:layout_marginRight="400px"
+                android:clipChildren="false">
+        </com.views.ImageViewPager>
+    </LinearLayout>
 
+    <com.views.GalleyViewPager
+            android:id="@+id/galleyViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-
+    </com.views.GalleyViewPager>
 
 
     <FrameLayout
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="100px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="100px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="200px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="200px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="300px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="300px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
 
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="400px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="400px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="500px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="500px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="600px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="600px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="700px"
-            android:layout_width="4px"
-            android:layout_height="20px"/>
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="700px"
+                android:layout_width="4px"
+                android:layout_height="20px"/>
         <LinearLayout
-            android:background="#0055ff"
-            android:layout_marginTop="360px"
-            android:layout_marginLeft="800px"
-            android:layout_width="4px"
-            android:layout_height="20px">
+                android:background="#0055ff"
+                android:layout_marginTop="360px"
+                android:layout_marginLeft="800px"
+                android:layout_width="4px"
+                android:layout_height="20px">
         </LinearLayout>
     </FrameLayout>
 
 
     <LinearLayout
-        android:visibility="gone"
-        android:layout_marginTop="400px"
-        android:background="@color/colorAccent"
-        android:layout_width="@dimen/px_100"
-        android:layout_height="100px"/>
+            android:visibility="gone"
+            android:layout_marginTop="400px"
+            android:background="@color/colorAccent"
+            android:layout_width="@dimen/px_100"
+            android:layout_height="100px"/>
 
 </FrameLayout>

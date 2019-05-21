@@ -11,11 +11,11 @@ import com.mycom.R;
 
 /**
  * Created by jiongfang on 2018/6/1.
- *  基础碎片类
+ * 基础碎片类
  */
-public class RightFragment extends Fragment{
+public class RightFragment extends Fragment {
 
-    public RightFragment(){
+    public RightFragment() {
 
     }
 

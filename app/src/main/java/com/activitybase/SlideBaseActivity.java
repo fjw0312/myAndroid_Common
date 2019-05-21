@@ -23,10 +23,10 @@ public class SlideBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        decorView=getWindow().getDecorView();
-        DisplayMetrics metrics=new DisplayMetrics();
+        decorView = getWindow().getDecorView();
+        DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        screenWidth=metrics.widthPixels;
+        screenWidth = metrics.widthPixels;
 
 //        setContentView(R.layout.activity_test);
     }
@@ -37,39 +37,38 @@ public class SlideBaseActivity extends AppCompatActivity {
     }
 
 
-
-    float startX,startY,endX,endY,distanceX,distanceY;
+    float startX, startY, endX, endY, distanceX, distanceY;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startX=event.getX();
-                startY=event.getY();
+                startX = event.getX();
+                startY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                endX=event.getX();
-                endY=event.getY();
-                distanceX=endX-startX;
-                distanceY=Math.abs(endY-startY);
+                endX = event.getX();
+                endY = event.getY();
+                distanceX = endX - startX;
+                distanceY = Math.abs(endY - startY);
                 //1.判断手势右滑  2.横向滑动的距离要大于竖向滑动的距离
-                if(endX-startX>0&&distanceY<distanceX){
+                if (endX - startX > 0 && distanceY < distanceX) {
                     decorView.setX(distanceX);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                endX=event.getX();
-                distanceX=endX-startX;
-                endY=event.getY();
-                distanceY=Math.abs(endY-startY);
+                endX = event.getX();
+                distanceX = endX - startX;
+                endY = event.getY();
+                distanceY = Math.abs(endY - startY);
                 //1.判断手势右滑  2.横向滑动的距离要大于竖向滑动的距离 3.横向滑动距离大于屏幕2分之一才能finish
-                if(endX-startX>0&&distanceY<distanceX&&distanceX>screenWidth/2){
+                if (endX - startX > 0 && distanceY < distanceX && distanceX > screenWidth / 2) {
                     moveOn(distanceX);
                 }
                 //1.判断手势右滑  2.横向滑动的距离要大于竖向滑动的距离 但是横向滑动距离不够则返回原位置
-                else if(endX-startX>0&&distanceY<distanceX){
+                else if (endX - startX > 0 && distanceY < distanceX) {
                     backOrigin(distanceX);
-                }else{
+                } else {
                     decorView.setX(0);
                 }
                 break;
@@ -78,21 +77,22 @@ public class SlideBaseActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
      * 返回原点
+     *
      * @param distanceX 横向滑动距离
      */
-    private void backOrigin(float distanceX){
-        ObjectAnimator.ofFloat(decorView,"X",distanceX,0).setDuration(300).start();
+    private void backOrigin(float distanceX) {
+        ObjectAnimator.ofFloat(decorView, "X", distanceX, 0).setDuration(300).start();
     }
+
     /**
      * 划出屏幕
+     *
      * @param distanceX 横向滑动距离
      */
-    private void moveOn(float distanceX){
-        ValueAnimator valueAnimator=ValueAnimator.ofFloat(distanceX,screenWidth);
+    private void moveOn(float distanceX) {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(distanceX, screenWidth);
         valueAnimator.setDuration(300);
         valueAnimator.start();
 
@@ -130,7 +130,7 @@ public class SlideBaseActivity extends AppCompatActivity {
     /**
      * 如果使用 开源框架：https://github.com/oubowu/SlideBack
      *API说明
-      1.先 继承 SlideBackActivity
+     1.先 继承 SlideBackActivity
      void setSlideable(boolean) —— 设置滑动返回是否可用，false不可用，默认为true
      void setPreviousActivitySlideFollow(boolean) —— 设置前一个activity的页面是否跟随滑动面一起滑动，false不滑动，默认为true
      void onSlideBack() —— 滑动退出时调用的回调方法，派生类可以重写这个方法，例如可以做一些统计工作，统计关闭activity的方式，多少是滑动返回关闭的

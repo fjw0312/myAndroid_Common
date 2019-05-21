@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
 
     <!--
     android:max="":设置最大进度
@@ -16,14 +16,14 @@
     -->
 
     <SeekBar
-        android:id="@+id/id_seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="0"
-        android:secondaryProgress="20"
-        android:thumb="@drawable/selector_srubber"
-        android:progressDrawable="@drawable/layer_seekbar"
-        />
+            android:id="@+id/id_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            android:secondaryProgress="20"
+            android:thumb="@drawable/selector_srubber"
+            android:progressDrawable="@drawable/layer_seekbar"
+    />
 
 </LinearLayout>

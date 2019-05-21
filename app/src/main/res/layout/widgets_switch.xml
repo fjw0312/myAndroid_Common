@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
 
 
     <!--
@@ -26,12 +26,12 @@
          故常用选择器来 设置轨迹背景 和 按钮背景 的开关2种不同状态
     -->
     <Switch
-        android:id="@+id/id_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:switchMinWidth="100dp"
-        android:thumb="@drawable/selector_thumb"
-        android:track="@drawable/selector_track"/>
+            android:id="@+id/id_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:switchMinWidth="100dp"
+            android:thumb="@drawable/selector_thumb"
+            android:track="@drawable/selector_track"/>
 
 
 </LinearLayout>

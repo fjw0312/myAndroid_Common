@@ -16,7 +16,7 @@ import android.view.WindowManager;
  */
 public class OverlaysBaseView {
 
-    public OverlaysBaseView(Context context){
+    public OverlaysBaseView(Context context) {
         mContext = context;
 
     }
@@ -30,7 +30,7 @@ public class OverlaysBaseView {
     WindowManager windowManager;
 
     //初始化 浮窗
-    private void initOverlaysView(View addView){
+    private void initOverlaysView(View addView) {
         //赋值WindowManager&LayoutParam.
         params = new WindowManager.LayoutParams();
         windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -38,13 +38,13 @@ public class OverlaysBaseView {
         if (Build.VERSION.SDK_INT >= 23) {
             params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;    //sdk >= 23
             // params.type = WindowManager.LayoutParams.TYPE_PHONE;
-        }else{
+        } else {
             params.type = WindowManager.LayoutParams.TYPE_TOAST;            //sdk  <= 23
         }
         //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                |WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                |WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
         //params.flags = WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM; //设置flags.
         params.gravity = Gravity.CENTER; //设置窗口初始停靠位置. //params.gravity = Gravity.LEFT | Gravity.TOP;
         params.format = PixelFormat.TRANSLUCENT;// params.format = PixelFormat.RGBA_8888;//设置效果为背景透明.
@@ -58,44 +58,49 @@ public class OverlaysBaseView {
         //params.x = 0;
         //params.y = 0;
 
-        windowManager.addView(addView,params);
+        windowManager.addView(addView, params);
     }
 
     //添加视图布局
-    public View setUpView(int layout_id,FindViewInterface findViewInterface){ //获得 控件 并 操作
+    public View setUpView(int layout_id, FindViewInterface findViewInterface) { //获得 控件 并 操作
         mView = LayoutInflater.from(mContext).inflate(layout_id, null);
         this.findViewInterface = findViewInterface;
-        if(this.findViewInterface!=null){
+        if (this.findViewInterface != null) {
             this.findViewInterface.OnFindViewById(mView);
         }
         return mView;
     }
+
     //显示 浮窗视图
-    public void showOverlayView(){
-        if(mView!=null){
+    public void showOverlayView() {
+        if (mView != null) {
             initOverlaysView(mView);
         }
     }
 
     private FindViewInterface findViewInterface;
-    public interface FindViewInterface{
+
+    public interface FindViewInterface {
         public void OnFindViewById(View view);
     }
 
     // 关闭 浮窗
-    public void removeOverlays(){
+    public void removeOverlays() {
         windowManager.removeView(mView);
     }
+
     //隐藏浮窗
     public void dismissDelayToast(int delayMs) {
         mDismissHandler.removeCallbacks(mDismissRunnable);
         mDismissHandler.postDelayed(mDismissRunnable, delayMs);
     }
+
     //隐藏浮窗
     public void dismissToast() {
         mDismissHandler.removeCallbacks(mDismissRunnable);
         mDismissHandler.post(mDismissRunnable);
     }
+
     private Handler mDismissHandler = new Handler();
     private Runnable mDismissRunnable = new Runnable() {
         @Override

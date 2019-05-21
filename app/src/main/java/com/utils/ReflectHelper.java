@@ -12,6 +12,7 @@ import java.util.Vector;
 
 public class ReflectHelper {
     private static final String TAG = "ReflectHelper";
+
     /*
      * 调用该对象所有可调用的公有方法,包括父类方法
      * 参数：obj 调用者对象
@@ -22,7 +23,7 @@ public class ReflectHelper {
      */
     public static Object callMethod(Object obj, String methodname, Class<?> types[], Object values[]) {
         // 注：数组类型为:基本类型+[].class,如String[]写成 new Class<?>[]{String[].class}
-        if(obj==null){
+        if (obj == null) {
             return null;
         }
         Class<?> classz = obj.getClass();
@@ -35,7 +36,7 @@ public class ReflectHelper {
 //	    Log.e(TAG, "callMethod "+methodname+" reason=" +  ex +" "+ ex.getMessage());
         } catch (Exception ex) {
             ex.printStackTrace();
-            Log.e(TAG, "callMethod "+methodname+" reason=" +  ex +" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "callMethod " + methodname + " reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -51,7 +52,7 @@ public class ReflectHelper {
      * 返回     methodname所返回的对象
      */
     public static Object callDeclaredMethod(Object obj, String methodname, Class<?> types[], Object values[]) {
-        if(obj==null){
+        if (obj == null) {
             return null;
         }
         Class<?> classz = obj.getClass();
@@ -64,7 +65,7 @@ public class ReflectHelper {
         } catch (NoSuchMethodException ex) {
 //	    Log.e(TAG, "callDeclaredMethod "+methodname+" reason=" +  ex +" "+ ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "callDeclaredMethod "+methodname+" reason=" +  ex +" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "callDeclaredMethod " + methodname + " reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -82,7 +83,7 @@ public class ReflectHelper {
         } catch (NoSuchMethodException ex) {
 //	    Log.e(TAG, "callDeclaredMethod2 "+declaredclassname +":"+methodname+" reason=" +  ex +" "+ ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "callDeclaredMethod2 "+declaredclassname +":"+methodname+" reason=" +  ex +" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "callDeclaredMethod2 " + declaredclassname + ":" + methodname + " reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -107,10 +108,11 @@ public class ReflectHelper {
         } catch (NoSuchMethodException ex) {
 //	    Log.e(TAG, "callStaticMethod "+ methodname+","+ex +" "+ ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "callStaticMethod "+ methodname+","+ex +" "+ ex.getMessage() +",cause="+ex.getCause());
+            Log.e(TAG, "callStaticMethod " + methodname + "," + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
+
     /*
      * 调用该类的静态方法，包括静态方法
      * 参数：className 	类名
@@ -127,36 +129,37 @@ public class ReflectHelper {
             classz = Class.forName(className);
             return callStaticMethod(classz, methodname, types, values);
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "callStaticMethod2 "+className +":"+methodname+" reason=" +  e+" "+ e.getMessage()+",cause="+e.getCause());
+            Log.e(TAG, "callStaticMethod2 " + className + ":" + methodname + " reason=" + e + " " + e.getMessage() + ",cause=" + e.getCause());
         }
         return null;
     }
 
     public static <T> T callMethod(Object receiver, Method method, Object... args) {
         try {
-            return (T) method.invoke(receiver,args);
+            return (T) method.invoke(receiver, args);
         } catch (IllegalAccessException e) {
-            Log.i(TAG, "callDeclaredMethod--->"+e.getMessage());
+            Log.i(TAG, "callDeclaredMethod--->" + e.getMessage());
         } catch (InvocationTargetException e) {
-            Log.i(TAG, "callDeclaredMethod--->"+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "callDeclaredMethod--" + method+e.getMessage());
+            Log.i(TAG, "callDeclaredMethod--->" + e.getMessage());
+        } catch (Exception e) {
+            Log.i(TAG, "callDeclaredMethod--" + method + e.getMessage());
         }
         return null;
     }
+
     public static final Method getDeclaredMethod(Class<?> clazz, String method, Class<?>... parameterTypes) {
         Method met = null;
         try {
             met = clazz.getDeclaredMethod(method, parameterTypes);
-            if( !met.isAccessible()){
+            if (!met.isAccessible()) {
                 met.setAccessible(true);
             }
         } catch (SecurityException e) {
-            Log.i(TAG, "getMethod--" + method+e.getMessage());
+            Log.i(TAG, "getMethod--" + method + e.getMessage());
         } catch (NoSuchMethodException e) {
 //	    Log.i(TAG, "getMethod--" + method+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "getMethod--" + method +",cause="+e.getCause());
+        } catch (Exception e) {
+            Log.i(TAG, "getMethod--" + method + ",cause=" + e.getCause());
         }
         return met;
     }
@@ -168,7 +171,7 @@ public class ReflectHelper {
      * 返回     成员对象
      */
     public static Object getFieldValue(Object obj, String fieldname) {
-        if(obj==null){
+        if (obj == null) {
             return null;
         }
         Class<?> classz = obj.getClass();
@@ -178,9 +181,9 @@ public class ReflectHelper {
             field = classz.getField(fieldname);
             retValue = field.get(obj);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "getFieldValue " +fieldname +",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "getFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "getFieldValue "+ fieldname +",reason=" + ex+" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "getFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -192,7 +195,7 @@ public class ReflectHelper {
      * 返回     成员对象
      */
     public static Object getDeclaredFieldValue(Object obj, String fieldname) {
-        if(obj==null){
+        if (obj == null) {
             return null;
         }
         Class<?> classz = obj.getClass();
@@ -203,9 +206,9 @@ public class ReflectHelper {
             field.setAccessible(true);
             retValue = field.get(obj);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "getDeclaredFieldValue " +fieldname +",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "getDeclaredFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "getDeclaredFieldValue "+ fieldname +",reason="+ ex+" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "getDeclaredFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -221,11 +224,11 @@ public class ReflectHelper {
             field.setAccessible(true);
             retValue = field.get(obj);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "getDeclaredFieldValue2 "+declaredclassname +":"+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "getDeclaredFieldValue2 " + declaredclassname + ":" + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "getDeclaredFieldValue2 "+declaredclassname +":"+fieldname+",reason="+ e+" "+ e.getMessage());
+            Log.e(TAG, "getDeclaredFieldValue2 " + declaredclassname + ":" + fieldname + ",reason=" + e + " " + e.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "getDeclaredFieldValue2 "+declaredclassname +":"+fieldname+",reason="+ ex+" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "getDeclaredFieldValue2 " + declaredclassname + ":" + fieldname + ",reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -245,9 +248,9 @@ public class ReflectHelper {
             field.setAccessible(true);
             retValue = field.get(null);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "getStaticFieldValue "+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "getStaticFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "getStaticFieldValue "+fieldname+",reason="+ ex+" "+ ex.getMessage()+",cause="+ex.getCause());
+            Log.e(TAG, "getStaticFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage() + ",cause=" + ex.getCause());
         }
         return retValue;
     }
@@ -263,7 +266,7 @@ public class ReflectHelper {
             Class<?> classz = Class.forName(className);
             return getStaticFieldValue(classz, fieldname);
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "getStaticFieldValue2 "+className +":"+fieldname+",reason="+ e+" "+ e.getMessage()+",cause="+e.getCause());
+            Log.e(TAG, "getStaticFieldValue2 " + className + ":" + fieldname + ",reason=" + e + " " + e.getMessage() + ",cause=" + e.getCause());
         }
         return null;
     }
@@ -276,9 +279,9 @@ public class ReflectHelper {
             }
             return f;
         } catch (NoSuchFieldException e) {
-            Log.i(TAG, "getField--->"+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "getField--" + name+e.getMessage());
+            Log.i(TAG, "getField--->" + e.getMessage());
+        } catch (Exception e) {
+            Log.i(TAG, "getField--" + name + e.getMessage());
         }
         return null;
     }
@@ -313,59 +316,60 @@ public class ReflectHelper {
             }
             return f;
         } catch (NoSuchFieldException e) {
-            Log.i(TAG, "getDeclaredField--->"+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "getDeclaredField--" + name+e.getMessage());
+            Log.i(TAG, "getDeclaredField--->" + e.getMessage());
+        } catch (Exception e) {
+            Log.i(TAG, "getDeclaredField--" + name + e.getMessage());
         }
         return null;
     }
 
-    public static <T> T getFieldValue(Object obj, Field field ) {
+    public static <T> T getFieldValue(Object obj, Field field) {
         try {
             return (T) field.get(obj);
         } catch (IllegalArgumentException e) {
-            Log.i(TAG, "getFieldValue--->"+e.getMessage());
+            Log.i(TAG, "getFieldValue--->" + e.getMessage());
         } catch (IllegalAccessException e) {
-            Log.i(TAG, "getFieldValue--->"+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "getFieldValue" +e.getMessage());
+            Log.i(TAG, "getFieldValue--->" + e.getMessage());
+        } catch (Exception e) {
+            Log.i(TAG, "getFieldValue" + e.getMessage());
         }
         return null;
     }
 
-    public static boolean getFieldValue(Object obj, Field field, boolean defaultVal ) {
+    public static boolean getFieldValue(Object obj, Field field, boolean defaultVal) {
         try {
             return field.getBoolean(obj);
         } catch (IllegalArgumentException e) {
-            Log.i(TAG, "getFieldValue--->"+e.getMessage());
+            Log.i(TAG, "getFieldValue--->" + e.getMessage());
         } catch (IllegalAccessException e) {
-            Log.i(TAG, "getFieldValue--->"+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "getFieldValue" +e.getMessage());
-        }
-        return defaultVal;
-    }
-    public static int getFieldValue(Object obj, Field field, int defaultVal ) {
-        try {
-            return field.getInt(obj);
-        } catch (IllegalArgumentException e) {
-            Log.i(TAG, "getFieldValue--->"+e.getMessage());
-        } catch (IllegalAccessException e) {
-            Log.i(TAG, "getFieldValue--->"+e.getMessage());
-        }catch(Exception e){
-            Log.i(TAG, "getFieldValue" +e.getMessage());
+            Log.i(TAG, "getFieldValue--->" + e.getMessage());
+        } catch (Exception e) {
+            Log.i(TAG, "getFieldValue" + e.getMessage());
         }
         return defaultVal;
     }
 
-    public static boolean setFieldValue(Object obj, Field field, Object value){
+    public static int getFieldValue(Object obj, Field field, int defaultVal) {
+        try {
+            return field.getInt(obj);
+        } catch (IllegalArgumentException e) {
+            Log.i(TAG, "getFieldValue--->" + e.getMessage());
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "getFieldValue--->" + e.getMessage());
+        } catch (Exception e) {
+            Log.i(TAG, "getFieldValue" + e.getMessage());
+        }
+        return defaultVal;
+    }
+
+    public static boolean setFieldValue(Object obj, Field field, Object value) {
         try {
             field.set(obj, value);
             return true;
         } catch (IllegalArgumentException e) {
-            Log.i(TAG, "setFieldValue--->"+e.getMessage());
+            Log.i(TAG, "setFieldValue--->" + e.getMessage());
         } catch (IllegalAccessException e) {
-            Log.i(TAG, "setFieldValue--->"+e.getMessage());
+            Log.i(TAG, "setFieldValue--->" + e.getMessage());
         }
         return false;
     }
@@ -379,17 +383,18 @@ public class ReflectHelper {
      */
     public static void setFieldValue(Object obj, String fieldname, Object value) {
 
-        Class<?> classz =null;// obj.getClass();
+        Class<?> classz = null;// obj.getClass();
         try {
             classz = obj.getClass();
             Field field = classz.getField(fieldname);
             field.set(obj, value);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "setFieldValue "+ fieldname+",reason="+ex+" "+ ex.getMessage());
+            Log.e(TAG, "setFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "setFieldValue "+ fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         }
     }
+
     /*
      * 赋值对象的数据成员,包括私有
      * 参数： classname 	类名称
@@ -398,21 +403,21 @@ public class ReflectHelper {
      * 返回     成员对象
      */
     public static void setDeclaredFieldValue(Object obj, String fieldname, Object value) {
-        Class<?> classz =null;// obj.getClass();
+        Class<?> classz = null;// obj.getClass();
         try {
             classz = obj.getClass();
             Field field = classz.getDeclaredField(fieldname);
             field.setAccessible(true);
             field.set(obj, value);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "setDeclaredFieldValue "+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setDeclaredFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "setDeclaredFieldValue "+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setDeclaredFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         }
     }
 
     public static void setDeclaredFieldValue(Object obj, String declaredclassname
-            , String fieldname, Object value){
+            , String fieldname, Object value) {
         try {
             Class<?> classz;
             classz = Class.forName(declaredclassname);
@@ -422,19 +427,19 @@ public class ReflectHelper {
 
 
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "setDeclaredFieldValue2 "+declaredclassname +":"+fieldname+",reason="+ e+" "+ e.getMessage());
+            Log.e(TAG, "setDeclaredFieldValue2 " + declaredclassname + ":" + fieldname + ",reason=" + e + " " + e.getMessage());
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "setDeclaredFieldValue2 "+declaredclassname +":"+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setDeclaredFieldValue2 " + declaredclassname + ":" + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "setDeclaredFieldValue2 "+declaredclassname +":"+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setDeclaredFieldValue2 " + declaredclassname + ":" + fieldname + ",reason=" + ex + " " + ex.getMessage());
         }
     }
 
-    public static Vector<String> getDeclaredFieldNames(Object obj){
+    public static Vector<String> getDeclaredFieldNames(Object obj) {
         Vector<String> fieldnames = new Vector<String>();
         Class<?> classz = obj.getClass();
-        Field fields[] =classz.getFields();
-        for(Field field:fields)
+        Field fields[] = classz.getFields();
+        for (Field field : fields)
             fieldnames.add(field.getName());
         return fieldnames;
 //	Field field = null;
@@ -456,9 +461,9 @@ public class ReflectHelper {
             field.setAccessible(true);
             field.set(null, value);
         } catch (NoSuchFieldException ex) {
-            Log.e(TAG, "setStaticFieldValue "+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setStaticFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "setStaticFieldValue "+fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setStaticFieldValue " + fieldname + ",reason=" + ex + " " + ex.getMessage());
         }
     }
 //    /***
@@ -492,22 +497,24 @@ public class ReflectHelper {
 
     /**
      * 给静态成员变量赋值
+     *
      * @param className 类名
      * @param fieldname 静态变量名
-     * @param value 赋值
+     * @param value     赋值
      */
     public static void setStaticFieldValue(String className, String fieldname, Object value) {
         try {
             Class<?> classz = Class.forName(className);
             setStaticFieldValue(classz, fieldname, value);
         } catch (ClassNotFoundException ex) {
-            Log.e(TAG, "setStaticFieldValue "+className +":"+ fieldname+",reason="+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "setStaticFieldValue " + className + ":" + fieldname + ",reason=" + ex + " " + ex.getMessage());
         }
     }
 
     /**
      * 生成指定类的实例
-     * @param classz 类
+     *
+     * @param classz    类
      * @param argsClass 构造参数类型
      * @param objects   构造参数值
      * @return 实例
@@ -521,13 +528,14 @@ public class ReflectHelper {
         } catch (NoSuchMethodException ex) {
 //	    Log.e(TAG, "newInstance "+ ex+" "+ ex.getMessage());
         } catch (Exception ex) {
-            Log.e(TAG, "newInstance "+ ex+" "+ ex.getMessage());
+            Log.e(TAG, "newInstance " + ex + " " + ex.getMessage());
         }
         return retObj;
     }
 
     /**
      * 生成类的实例
+     *
      * @param classz 类的类类型
      * @return 实例
      */
@@ -538,37 +546,39 @@ public class ReflectHelper {
             return constructor.newInstance();
 //	    return classz.newInstance();
         } catch (IllegalAccessException e) {
-            Log.e(TAG, "newInstance2 "+ e+" "+ e.getMessage());
+            Log.e(TAG, "newInstance2 " + e + " " + e.getMessage());
         } catch (InstantiationException e) {
-            Log.e(TAG, "newInstance2 "+ e+" "+ e.getMessage());
+            Log.e(TAG, "newInstance2 " + e + " " + e.getMessage());
         } catch (Exception e) {
-            Log.e(TAG, "newInstance3 "+ e+" "+ e.getMessage());
+            Log.e(TAG, "newInstance3 " + e + " " + e.getMessage());
         }
         return null;
     }
+
     /**
      * 生成类有实例数组
      */
-    public static Object newInstance(Class<?> classz, int length){
+    public static Object newInstance(Class<?> classz, int length) {
         return Array.newInstance(classz, length);
     }
 
-    public static Object newInstance(String className, int length){
+    public static Object newInstance(String className, int length) {
         Class<?> classz;
         try {
             classz = Class.forName(className);
             return newInstance(classz, length);
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "newInstance3 "+ e+" "+ e.getMessage());
+            Log.e(TAG, "newInstance3 " + e + " " + e.getMessage());
             return null;
         }
     }
 
     /**
      * 生成类实例
+     *
      * @param className 类名
      * @param argsClass 构造参数类型
-     * @param objects  构造参数
+     * @param objects   构造参数
      * @return 类实例
      */
     public static Object newInstance(String className, Class<?> argsClass[], Object objects[]) {
@@ -576,12 +586,14 @@ public class ReflectHelper {
             Class<?> classz = Class.forName(className);
             return newInstance(classz, argsClass, objects);
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "newInstance4 "+ e+" "+ e.getMessage());
+            Log.e(TAG, "newInstance4 " + e + " " + e.getMessage());
         }
         return null;
     }
+
     /**
      * 构造类的实例
+     *
      * @param className 类名
      * @return 类实例
      */
@@ -590,64 +602,67 @@ public class ReflectHelper {
             Class<?> classz = Class.forName(className);
             return newInstance(classz);
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "newInstance5 "+ e+" "+ e.getMessage());
+            Log.e(TAG, "newInstance5 " + e + " " + e.getMessage());
         }
         return null;
     }
 
     /**
      * 判断类是否支持指定的方法
-     * @param className 类名
+     *
+     * @param className  类名
      * @param methodName 方法名
-     * @param argClass 方法的参数类型
+     * @param argClass   方法的参数类型
      * @return
      */
-    public static boolean methodSupported(String className, String methodName, Class<?> argClass[]){
-        try{
+    public static boolean methodSupported(String className, String methodName, Class<?> argClass[]) {
+        try {
             Class<?> classz = Class.forName(className);
             try {
-                if (methodName.equals("<init>")){
+                if (methodName.equals("<init>")) {
                     Constructor<?> constructor = classz.getDeclaredConstructor(argClass);// 定位构造方法
                     return constructor != null;
-                }else{
+                } else {
                     classz.getDeclaredMethod(methodName, argClass);
                 }
             } catch (SecurityException e) {
 //		Log.e(TAG, "methodSupported "+ e+" "+ e.getMessage());
                 return false;
             } catch (NoSuchMethodException e) {
-                try{
+                try {
                     classz.getMethod(methodName, argClass);
                     return true;
-                }catch(Exception e1){
+                } catch (Exception e1) {
                 }
 //		Log.e(TAG, "methodSupported "+ e+" "+ e.getMessage());
                 return false;
             }
             return true;
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }
 
     /**
      * 判断obj是否支持指定的方法
+     *
      * @param obj
      * @param methodName
      * @param argClass
      * @return
      */
-    public static boolean methodSupported(Object obj, String methodName, Class<?> argClass[]){
+    public static boolean methodSupported(Object obj, String methodName, Class<?> argClass[]) {
         Class<?> classz = obj.getClass();
-        return methodSupported(classz.getName(),methodName, argClass);
+        return methodSupported(classz.getName(), methodName, argClass);
     }
 
     /**
      * 检查指定的类是否存在
+     *
      * @param className
      * @return
      */
-    public static boolean classSupported(String className){
+    public static boolean classSupported(String className) {
         try {
             Class.forName(className);
             return true;
@@ -658,21 +673,22 @@ public class ReflectHelper {
 
     /**
      * 判断一个类是否从指定的类派生的
+     *
      * @param className：需要检查的类
      * @param baseclazz：基类
      * @return
      */
-    public static boolean classDerivedFrom(String className, Class<?> baseclazz){
+    public static boolean classDerivedFrom(String className, Class<?> baseclazz) {
         try {
             Class<?> clazz = Class.forName(className);
             boolean flag = false;
-            do{
+            do {
                 if (clazz.equals(baseclazz))
                     return true;
                 clazz = clazz.getSuperclass();
                 if (clazz == null)
                     return false;
-            }while(!(flag=clazz.equals(baseclazz)));
+            } while (!(flag = clazz.equals(baseclazz)));
 
             return flag;
         } catch (ClassNotFoundException e) {
@@ -682,6 +698,7 @@ public class ReflectHelper {
 
     /**
      * 判断一个类是否从指定的类派生的
+     *
      * @param className：需要检查的类
      * @param strbaseclazz：基类
      * @return
@@ -691,7 +708,7 @@ public class ReflectHelper {
             Class<?> baseclazz = Class.forName(strbaseclazz);
             return classDerivedFrom(className, baseclazz);
         } catch (Exception e) {
-            Log.e(TAG, "classDerivedFrom "+className +","+strbaseclazz+",reason="+ e+" "+ e.getMessage());
+            Log.e(TAG, "classDerivedFrom " + className + "," + strbaseclazz + ",reason=" + e + " " + e.getMessage());
         }
         return false;
     }

@@ -30,59 +30,65 @@ public class CirclePageIndicator extends View {
         super(context, attrs, defStyleAttr);
         init_view(context);
     }
+
     //初始化
-    private void init_view(Context context){
+    private void init_view(Context context) {
         mContext = context;
         mPaint = new Paint();
-    //    mPaint.setColor(sideColor);
-    //    mPaint.setStyle(Paint.Style.STROKE); //设置不填充模式
-    //  mPaint.setStrokeWidth(sideSize); //设置线宽
+        //    mPaint.setColor(sideColor);
+        //    mPaint.setStyle(Paint.Style.STROKE); //设置不填充模式
+        //  mPaint.setStrokeWidth(sideSize); //设置线宽
     }
 
 
     //定义控件   默认基本尺寸
-    private static  int DEFAULT_WIDTH = 100;   //默认 控件 宽度200
-    private static  int DEFAULT_HEIGHT = 30;  //默认 控件 高度30
+    private static int DEFAULT_WIDTH = 100;   //默认 控件 宽度200
+    private static int DEFAULT_HEIGHT = 30;  //默认 控件 高度30
 
     Context mContext;
     Activity mActivity;
     Paint mPaint;
-    public  int  CircleNum = 4;  //小圆点个数
-    public  int  selectItem = 0; //选中的圆点
-    public  int  sideColor = Color.GRAY;  //边沿颜色
-    public  int  selectColor = Color.RED;  //选中圆点颜色
-    public  int  backgroundColor = Color.WHITE;
-    public  float  radius = 10;  //默认半径
-    public  float   sideSize = 1.0f;  //边沿圆圈 线条大小
+    public int CircleNum = 4;  //小圆点个数
+    public int selectItem = 0; //选中的圆点
+    public int sideColor = Color.GRAY;  //边沿颜色
+    public int selectColor = Color.RED;  //选中圆点颜色
+    public int backgroundColor = Color.WHITE;
+    public float radius = 10;  //默认半径
+    public float sideSize = 1.0f;  //边沿圆圈 线条大小
 
     private int oldState = -1;
 
 
     //----------对 外  API----------------
-    public void setBackgroundColor(int color){
+    public void setBackgroundColor(int color) {
         backgroundColor = color;
     }
-    public void setSideColor(int color){
+
+    public void setSideColor(int color) {
         sideColor = color;
     }
-    public void setSelectColor(int color){
+
+    public void setSelectColor(int color) {
         selectColor = color;
     }
-    public void setCircleNum(int num){
+
+    public void setCircleNum(int num) {
         CircleNum = num;
     }
-    public void setSelectItem(int selectId){
-        if(selectId>CircleNum) return;
+
+    public void setSelectItem(int selectId) {
+        if (selectId > CircleNum) return;
         selectItem = selectId;
         this.postInvalidate(); //请求刷新
     }
-    public void setActivity(Activity activity){
+
+    public void setActivity(Activity activity) {
         mActivity = activity;
     }
 
     //根据viewPager 获取页面数  和滑动页面监听
-    public void setViewPager(ViewPager viewPager){
-        if(viewPager == null) return;
+    public void setViewPager(ViewPager viewPager) {
+        if (viewPager == null) return;
         CircleNum = viewPager.getAdapter().getCount();
         this.invalidate();
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -100,47 +106,43 @@ public class CirclePageIndicator extends View {
 
             @Override  //切页 1->2->0  最后一页 1->0
             public void onPageScrollStateChanged(int state) {
-               // Log.i("CirclePageIndicator",String.valueOf(state));
-                if(oldState==1 && state ==0 && selectItem == CircleNum-1){  //判断最后一页  滑不动
-                    if(mActivity!=null){
-                      //  Intent intent = new Intent(mActivity, MainActivity.class);
-                      //  mActivity.startActivity(intent);
-                      //  mActivity.finish();  //关闭 Activity
+                // Log.i("CirclePageIndicator",String.valueOf(state));
+                if (oldState == 1 && state == 0 && selectItem == CircleNum - 1) {  //判断最后一页  滑不动
+                    if (mActivity != null) {
+                        //  Intent intent = new Intent(mActivity, MainActivity.class);
+                        //  mActivity.startActivity(intent);
+                        //  mActivity.finish();  //关闭 Activity
                     }
                 }
-                oldState  = state;
+                oldState = state;
             }
         });
     }
 
 
-
-
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-  //      canvas.drawColor(Color.BLACK);
+        //      canvas.drawColor(Color.BLACK);
         //获取  控件的 长宽  此处画图形 一定要注意 控件使用时实际的大小   与自定义的控件最小尺寸的关系。
         int width = getWidth();
         int height = getHeight();
 
         //画 圆点
-        if(CircleNum==0) return;
-        int x = width/CircleNum;
+        if (CircleNum == 0) return;
+        int x = width / CircleNum;
         mPaint.setStyle(Paint.Style.FILL); //设置不填充模式
         mPaint.setColor(backgroundColor);
-        for(int i=0;i<CircleNum;i++){
-            canvas.drawCircle(i*x+x/2,height/2, radius, mPaint);  //画空点底板
+        for (int i = 0; i < CircleNum; i++) {
+            canvas.drawCircle(i * x + x / 2, height / 2, radius, mPaint);  //画空点底板
         }
         mPaint.setStyle(Paint.Style.FILL); //设置不填充模式
         mPaint.setColor(selectColor);
-        canvas.drawCircle(selectItem*x+x/2,height/2, radius, mPaint);  //画空点
+        canvas.drawCircle(selectItem * x + x / 2, height / 2, radius, mPaint);  //画空点
         mPaint.setStyle(Paint.Style.STROKE); //设置不填充模式
         mPaint.setColor(sideColor);
-        for(int i=0;i<CircleNum;i++){
-            canvas.drawCircle(i*x+x/2,height/2, radius, mPaint);  //画空心点
+        for (int i = 0; i < CircleNum; i++) {
+            canvas.drawCircle(i * x + x / 2, height / 2, radius, mPaint);  //画空心点
         }
     }
 
@@ -166,12 +168,12 @@ public class CirclePageIndicator extends View {
 
 
         //判断  布局模式  是否有wrap_content 控件默认尺寸
-        DEFAULT_WIDTH = CircleNum *50+50;
-        if(widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST){
+        DEFAULT_WIDTH = CircleNum * 50 + 50;
+        if (widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        }else if(widthMode == MeasureSpec.AT_MOST){
+        } else if (widthMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(DEFAULT_WIDTH, heightSize);
-        }else if(heightMode == MeasureSpec.AT_MOST){
+        } else if (heightMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(widthSize, DEFAULT_HEIGHT);
         }
 

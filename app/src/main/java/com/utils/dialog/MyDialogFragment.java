@@ -21,7 +21,7 @@ public class MyDialogFragment extends DialogFragment {
     private String message;
 
     public MyDialogFragment show(String title, String message, DialogInterface.OnClickListener positiveCallback,
-                     DialogInterface.OnClickListener negativeCallback, FragmentManager fragmentManager) {
+                                 DialogInterface.OnClickListener negativeCallback, FragmentManager fragmentManager) {
         this.title = title;
         this.message = message;
         this.positiveCallback = positiveCallback;
@@ -42,16 +42,14 @@ public class MyDialogFragment extends DialogFragment {
 
     /** 外部调用 使用案例
      *  new MyDialogFragment().show("Hi,你好", "内容", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "点击了确定 " + which, Toast.LENGTH_SHORT).show();
-            }
-            }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "点击了取消 " + which, Toast.LENGTH_SHORT).show();
-            }
-            }, getFragmentManager());
+    @Override public void onClick(DialogInterface dialog, int which) {
+    Toast.makeText(MainActivity.this, "点击了确定 " + which, Toast.LENGTH_SHORT).show();
+    }
+    }, new DialogInterface.OnClickListener() {
+    @Override public void onClick(DialogInterface dialog, int which) {
+    Toast.makeText(MainActivity.this, "点击了取消 " + which, Toast.LENGTH_SHORT).show();
+    }
+    }, getFragmentManager());
      }
      * **/
 }

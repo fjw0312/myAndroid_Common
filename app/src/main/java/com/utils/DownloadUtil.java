@@ -15,13 +15,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by martinpeng on 2016/10/17.
- * 下载完 后 记得还要校验 一下md5.
+ * Created by
  */
 public class DownloadUtil {
+    public DownloadUtil(String fileName) {
+        UPDATAE_FILE_NAME = fileName;
+        UPDATE_ZIP_FILE = UPDATE_ZIP_DIR + UPDATAE_FILE_NAME;
+    }
 
-    public final static  String UPDATE_ZIP_DIR_USBHID = MyApplication.SAVE_FILE_PATH+"USBVupdate/";
-    public final static  String UPDATE_ZIP_FILE_USBHID = UPDATE_ZIP_DIR_USBHID+"usbHidUpdate.bin";
+    public final static String UPDATE_ZIP_DIR = MyApplication.SAVE_FILE_PATH+"DirUpdate/";
+    public  static String UPDATAE_FILE_NAME = "xxx.dat";
+    public  static String UPDATE_ZIP_FILE = UPDATE_ZIP_DIR + UPDATAE_FILE_NAME;
+
+    public final static String USER_AGENT = "K9_update"; //网络连接参数
+    public final static int  TIME_OUT = 5*1000;   //网络超时
+
+    private static final String SaveMD5 = "k9_Save_downloadInfo"; //用于保存下载的md5
+    private static final String SaveMD5Key = "k9_Save_downloadInfo_key_md5_info";
+    private static final String PREFRENCE_FILE = "k9_downloadInfo"; //用于保存在下载过程中的md5 用于 断点续传
+    private static final String KEY_MD5_INFO = "k9_downloadInfo_key_md5_info";
 
     public static boolean isDownloading = false;
     private static long oldDownloadPos = 0 ;
@@ -54,8 +66,8 @@ public class DownloadUtil {
         RandomAccessFile fs = null;
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("User-Agent","K9_UsbHid");
-            conn.setConnectTimeout(5 * 1000); // 设置连接超时
+            conn.setRequestProperty("User-Agent",  USER_AGENT);
+            conn.setConnectTimeout(TIME_OUT); // 设置连接超时
             conn.setRequestProperty("Connection", "Keep-Alive");
             if(oldDownloadPos!= 0) {
                 conn.setRequestProperty("Range", "bytes=" + oldDownloadPos + "-");
@@ -118,10 +130,9 @@ public class DownloadUtil {
 
     }
 
-
+    // 删除下载文件
     public static void deleteDownloadFile() {
-        File dir = new File(UPDATE_ZIP_DIR_USBHID);
-
+        File dir = new File(UPDATE_ZIP_DIR);
         if (!dir.exists()) {
             return;
         }
@@ -132,9 +143,9 @@ public class DownloadUtil {
             }
         }
     }
-
+    //计算 下载文件大小
     private static long calculateDownloadFileSize(){
-        File file = new File(UPDATE_ZIP_FILE_USBHID);
+        File file = new File(UPDATE_ZIP_FILE);
         if(file != null && file.exists()){
             return file.length();
         }
@@ -160,6 +171,59 @@ public class DownloadUtil {
     }
 
 
+    //保存 md5
+    public static String getSaveDownloadMD5(){
+        String md5 = "";
+        md5 = MyApplication.getContext().getSharedPreferences(SaveMD5, Context.MODE_PRIVATE).getString(SaveMD5Key, "");
+        LogcatFileHelper.i("Jiong>>","@@@@@@@@@@@@@@@@@ 获取 MD5="+md5);
+        return md5;
+    }
+    public static void setSaveDownloadMD5(String md5){
+        if(md5==null) return;
+        MyApplication.getContext().getSharedPreferences(SaveMD5, Context.MODE_PRIVATE).edit()
+                .putString(SaveMD5Key, md5).commit();
+        LogcatFileHelper.i("Jiong>>","@@@@@@@@@@@@@@@@@ 设置MD5="+md5);
+    }
+    //下载包状态信息 -- 做断点续传
+    private static class StateInfoPersist {
+        public static void setDownloadMD5Info(String md5) {
+            if (md5 == null) {
+                return;
+            }
+            MyApplication.getContext().getSharedPreferences(PREFRENCE_FILE, Context.MODE_PRIVATE).edit()
+                    .putString(KEY_MD5_INFO, md5).commit();
+        }
+
+        public static String getDownloadMD5Info() {
+            return MyApplication.getContext().getSharedPreferences(PREFRENCE_FILE, Context.MODE_PRIVATE).getString(KEY_MD5_INFO, "");
+        }
+    }
+
+    /**
+     * 检查文件完整性，并通知UI线程（如果有更新则保存配置）
+     *
+     * @param path
+     * @param md5
+     */
+    public static boolean checkAndSaveUpdate(String path, String md5) {
+        File file = new File(path);
+        LogcatFileHelper.i(TAG, "checkAndSaveUpdate into ");
+        if (file.exists() && file.isFile()) {
+            String tmd5 = FileMD5Util.getInstance().getFileHash(file);
+            LogcatFileHelper.i(TAG, "checkAndSaveUpdate into ");
+            LogcatFileHelper.i(TAG, "文件md5值：" + md5 + "    计算的md5值:" + tmd5);
+            boolean isOk = md5.equals(tmd5);
+            if (isOk) {
+                return true;
+            } else {
+                //如果校验不合法，则删掉已下载的文件
+                LogcatFileHelper.i(TAG, "文件校验不通过，删除已下载文件...");
+                file.delete();
+            }
+        }
+        return false;
+    }
+
     /**
      * 开始下载
      *
@@ -174,6 +238,7 @@ public class DownloadUtil {
         isDownloading = true;
         LogcatFileHelper.i("Jiong"+TAG,"into startDownload");
         String downloadMD5 = StateInfoPersist.getDownloadMD5Info();
+
         oldDownloadPos  = 0 ;
         if (downloadMD5 != null) {
             if (downloadMD5.equals(md5)){
@@ -187,39 +252,30 @@ public class DownloadUtil {
         }
 
         StateInfoPersist.setDownloadMD5Info(md5);
+        setSaveDownloadMD5(md5);
         new Thread() {
             @Override
             public void run() {
-                File dir = new File(UPDATE_ZIP_DIR_USBHID);
+                File dir = new File(UPDATE_ZIP_DIR);
                 if(dir == null || !dir.exists()){
                     dir.mkdirs();
                 }
-                boolean result = httpDownload(url, UPDATE_ZIP_FILE_USBHID);
+                boolean result = httpDownload(url, UPDATE_ZIP_FILE);
+
+                //检验 Md5 文件
+                if(result){
+                    String saveMd5 =  getSaveDownloadMD5();
+                    result = checkAndSaveUpdate(UPDATE_ZIP_FILE,saveMd5);
+                }
+
                 if (listener != null) {
-                    listener.onDonwloadComplete(result, UPDATE_ZIP_FILE_USBHID);
+                    listener.onDonwloadComplete(result, UPDATE_ZIP_FILE);
                 }
                 isDownloading = false;
             }
         }.start();
 
         return 0;
-    }
-
-    private static class StateInfoPersist {
-
-        private static final String KEY_MD5_INFO = "key_download_usbHid_md5_info";
-
-        public static void setDownloadMD5Info(String md5) {
-            if (md5 == null) {
-                return;
-            }
-            MyApplication.getContext().getSharedPreferences("k9_usbHid_downloadInfo", Context.MODE_PRIVATE).edit()
-                    .putString(KEY_MD5_INFO, md5).commit();
-        }
-
-        public static String getDownloadMD5Info() {
-            return MyApplication.getContext().getSharedPreferences("k9_usbHid_downloadInfo", Context.MODE_PRIVATE).getString(KEY_MD5_INFO, "");
-        }
     }
 
 
@@ -232,11 +288,13 @@ public class DownloadUtil {
         DownloadUtil.listener = listener;
     }
 
-
     /**
-     * 使用方式：
-     * DownloadUtil.startDownload(updateBean.md5,updateBean.rew_url);
-     * DownloadUtil.setListener(downloadChangedListener);
-     *
-     */
+     * 使用demo
+     * 1.实例化
+     * DownloadUtils download = new DowloadUtils("xx.apk");
+     * 2.设置下载结束监听
+     * download.setListener();
+     * 3.开始下载
+     * download.startDownload();
+     * */
 }

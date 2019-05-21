@@ -13,9 +13,9 @@ import android.widget.Scroller;
 
 /**
  * Created by jiongfang on 2018/5/7.
- *  右滑退出 布局 自定义布局
+ * 右滑退出 布局 自定义布局
  */
-public class SlideLayout extends RelativeLayout implements View.OnTouchListener{
+public class SlideLayout extends RelativeLayout implements View.OnTouchListener {
     /**
      * SildingFinishLayout布局的父布局
      */
@@ -80,9 +80,6 @@ public class SlideLayout extends RelativeLayout implements View.OnTouchListener{
             viewWidth = this.getWidth();
         }
     }
-
-
-
 
 
     /**
@@ -196,6 +193,7 @@ public class SlideLayout extends RelativeLayout implements View.OnTouchListener{
                 Math.abs(delta));
         postInvalidate();
     }
+
     @Override
     public void computeScroll() {
         // 调用startScroll的时候scroller.computeScrollOffset()返回true，
@@ -211,7 +209,6 @@ public class SlideLayout extends RelativeLayout implements View.OnTouchListener{
             }
         }
     }
-
 
 
     /**
@@ -235,10 +232,9 @@ public class SlideLayout extends RelativeLayout implements View.OnTouchListener{
      *
      * slidelayout = (SlideLayout)findViewById(R.id.slidelayout);
      slidelayout.setOnSildingFinishListener(new SlideLayout.OnSildingFinishListener() {
-       @Override
-        public void onSildingFinish() {
-             SlideLayoutActivity.this.finish();
-       }
+    @Override public void onSildingFinish() {
+    SlideLayoutActivity.this.finish();
+    }
     });
      slidelayout.setTouchView(slidelayout); //传入参数 要根据实际注意
      *

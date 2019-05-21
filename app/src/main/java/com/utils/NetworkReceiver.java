@@ -10,27 +10,28 @@ import android.util.Log;
 /**
  * Created by fjw0312 on 2018/4/17.
  * 捕获网络 变化广播   --具体待完善
- *
+ * <p>
  * <receiver android:name="com.receiver.NetworkReceiver"
-     android:enabled="true"
-     android:exported="true">
-     <intent-filter>
-         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-     </intent-filter>
- </receiver>
+ * android:enabled="true"
+ * android:exported="true">
+ * <intent-filter>
+ * <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+ * </intent-filter>
+ * </receiver>
  */
 
 public class NetworkReceiver extends BroadcastReceiver {
     private static final String TAG = "NetworkReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d(TAG,"action:" + action);
+        Log.d(TAG, "action:" + action);
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             Log.d(TAG, "网络状态已经改变");
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-            if(info != null && info.isAvailable()) {
+            if (info != null && info.isAvailable()) {
                 String name = info.getTypeName();
                 Log.d(TAG, "当前网络名称：" + name);
             } else {

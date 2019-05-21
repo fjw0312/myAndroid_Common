@@ -13,7 +13,7 @@ import com.utils.LogcatFileHelper;
 
 /**
  * Created by jiongfang on 2018/3/15.
- *  垂直 seekBar  自定义控件
+ * 垂直 seekBar  自定义控件
  */
 public class VerticalSeekBar extends AppCompatSeekBar {
 
@@ -35,8 +35,9 @@ public class VerticalSeekBar extends AppCompatSeekBar {
 
     PopupWindow mPopup;
     TextView mPopupTextView;
-    int mPopupWidth  = 80;
-    public void initHintPopup(Context context){
+    int mPopupWidth = 80;
+
+    public void initHintPopup(Context context) {
         /*
         String popupText = null;
         View contentView=LayoutInflater.from(context).inflate(R.layout.popup, null, false);
@@ -74,7 +75,8 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         setProgress(mProgress);
         onSizeChanged(getWidth(), getHeight(), 0, 0);
     }
-    public int getmProgress(){
+
+    public int getmProgress() {
         return getProgress();
     }
 
@@ -98,7 +100,6 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         super.onDraw(c);
 
 
-
     }
 
     int mprocess;
@@ -110,9 +111,9 @@ public class VerticalSeekBar extends AppCompatSeekBar {
             case MotionEvent.ACTION_DOWN:
                 mprocess = getMax() - (int) (getMax() * event.getY() / getHeight());
                 currentProcess = getmProgress();
-                if(mprocess != currentProcess){
+                if (mprocess != currentProcess) {
                     setmProgress(mprocess);
-                    setChangeProcess(this,mprocess);
+                    setChangeProcess(this, mprocess);
                 }
                 onSizeChanged(getWidth(), getHeight(), 0, 0);
                 setStartTrackingTouch(this);
@@ -121,19 +122,19 @@ public class VerticalSeekBar extends AppCompatSeekBar {
             case MotionEvent.ACTION_MOVE:
                 mprocess = getMax() - (int) (getMax() * event.getY() / getHeight());
                 currentProcess = getmProgress();
-                if(mprocess != currentProcess){
+                if (mprocess != currentProcess) {
                     //            Log.i("Jiong>.","dispatchTouchEvent   .ACTION_MOVE  set  mprocess="+mprocess+"    currentProcess="+currentProcess);
                     setmProgress(mprocess);
-                    setChangeProcess(this,mprocess);
+                    setChangeProcess(this, mprocess);
                 }
                 //        Log.i("Jiong>.","dispatchTouchEvent   .ACTION_MOVE ");
                 break;
             case MotionEvent.ACTION_UP:
                 mprocess = getMax() - (int) (getMax() * event.getY() / getHeight());
                 currentProcess = getmProgress();
-                if(mprocess != currentProcess){
+                if (mprocess != currentProcess) {
                     setmProgress(mprocess);
-                    setChangeProcess(this,mprocess);
+                    setChangeProcess(this, mprocess);
                 }
                 //        Log.i("Jiong>.","dispatchTouchEvent   .ACTION_UP ");
                 setStopTrackingTouch(this);
@@ -147,6 +148,7 @@ public class VerticalSeekBar extends AppCompatSeekBar {
     boolean isShowTink = false;
     float eventX = 0f;
     float eventY = 0f;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!isEnabled()) {
@@ -167,7 +169,7 @@ public class VerticalSeekBar extends AppCompatSeekBar {
 
             case MotionEvent.ACTION_CANCEL:
                 isShowTink = false;
-                Log.i("Jiong","ACTION_CANCEL");
+                Log.i("Jiong", "ACTION_CANCEL");
                 break;
         }
         return true;
@@ -190,34 +192,40 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         final int max = getMax();
         progress = scale * max;
         setProgress((int) progress);
-        LogcatFileHelper.i("Jiong>>","VerticalSeekBar 设置进度 progress="+progress);
+        LogcatFileHelper.i("Jiong>>", "VerticalSeekBar 设置进度 progress=" + progress);
     }
 
 
     TrackingTouchListener trackingTouchListener;
-    public interface TrackingTouchListener{
+
+    public interface TrackingTouchListener {
         public void OnStartTrackingTouch(VerticalSeekBar verticalSeekBar);
+
         public void OnStopTrackingTouch(VerticalSeekBar verticalSeekBar);
+
         public void OnProcessChange(VerticalSeekBar verticalSeekBar, int process);
     }
 
-    public void setTrackingTouchListener(TrackingTouchListener trackingTouchListener){
+    public void setTrackingTouchListener(TrackingTouchListener trackingTouchListener) {
         this.trackingTouchListener = trackingTouchListener;
     }
-    private void setStartTrackingTouch(VerticalSeekBar verticalSeekBar){
-        if(trackingTouchListener!=null){
+
+    private void setStartTrackingTouch(VerticalSeekBar verticalSeekBar) {
+        if (trackingTouchListener != null) {
             trackingTouchListener.OnStartTrackingTouch(verticalSeekBar);
         }
 
     }
-    private void setStopTrackingTouch(VerticalSeekBar verticalSeekBar){
-        if(trackingTouchListener!=null) {
+
+    private void setStopTrackingTouch(VerticalSeekBar verticalSeekBar) {
+        if (trackingTouchListener != null) {
             trackingTouchListener.OnStopTrackingTouch(verticalSeekBar);
         }
     }
-    private void setChangeProcess(VerticalSeekBar verticalSeekBar,int process){
-        if(trackingTouchListener!=null) {
-            trackingTouchListener.OnProcessChange(verticalSeekBar,process);
+
+    private void setChangeProcess(VerticalSeekBar verticalSeekBar, int process) {
+        if (trackingTouchListener != null) {
+            trackingTouchListener.OnProcessChange(verticalSeekBar, process);
         }
     }
 

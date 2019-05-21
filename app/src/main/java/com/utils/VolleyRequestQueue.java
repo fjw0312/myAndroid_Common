@@ -17,8 +17,9 @@ import org.json.JSONObject;
 public class VolleyRequestQueue {
 
     public static RequestQueue mQueue;
-    public static synchronized RequestQueue instance(Context context){
-        if(mQueue == null){
+
+    public static synchronized RequestQueue instance(Context context) {
+        if (mQueue == null) {
             mQueue = Volley.newRequestQueue(context);
         }
         return mQueue;
@@ -28,12 +29,12 @@ public class VolleyRequestQueue {
     public static JSONObject jsonObject = new JSONObject();
 
     // 获取  Http Get方法 JSONObject
-    public static JSONObject getJsonObject_Volley_Get(Context context, String strUrl){
+    public static JSONObject getJsonObject_Volley_Get(Context context, String strUrl) {
         //1.创建 RequestQueue
         RequestQueue mQueue = VolleyRequestQueue.instance(context); //  RequestQueue mQueue = Volley.newRequestQueue(context);
         //2.创建 JsonObjectRequest
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(strUrl, jsonObject,
-                new myRequestListener(), new myRequestErrorListener() );
+                new myRequestListener(), new myRequestErrorListener());
         //3. 请求数据对象 添加到Queue
         mQueue.add(jsonObjectRequest);
 
@@ -46,10 +47,11 @@ public class VolleyRequestQueue {
             jsonObject = response;
         }
     }
+
     private static class myRequestErrorListener implements Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
-            LogcatFileHelper.e("VolleyRequestQueue>","getJsonObject_Volley_Get>接收异常！");
+            LogcatFileHelper.e("VolleyRequestQueue>", "getJsonObject_Volley_Get>接收异常！");
         }
     }
 

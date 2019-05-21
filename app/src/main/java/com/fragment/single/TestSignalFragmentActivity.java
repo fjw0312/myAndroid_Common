@@ -17,7 +17,7 @@ import com.mycom.R;
 
 /**
  * Created by jiongfang on 2018/6/1.
- *
+ * <p>
  * 碎片的最简易用法，特点 碎片页面 更换 但 不保存碎片，一更换马上销毁
  */
 public class TestSignalFragmentActivity extends AppCompatActivity {
@@ -39,8 +39,8 @@ public class TestSignalFragmentActivity extends AppCompatActivity {
 
         init_fragment(savedInstanceState);
 
-        ly = (FrameLayout)findViewById(R.id.ly);
-        bn = (Button)findViewById(R.id.bn);
+        ly = (FrameLayout) findViewById(R.id.ly);
+        bn = (Button) findViewById(R.id.bn);
         bn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,27 +53,27 @@ public class TestSignalFragmentActivity extends AppCompatActivity {
                 transaction.commit();
 
                 //碎片 使用方式2：
-               // show_fragement(fragment2);
+                // show_fragement(fragment2);
             }
         });
     }
 
     //初始化 碎片页面
-    private void init_fragment(Bundle savedInstanceState){  //必须在onCreate调用
+    private void init_fragment(Bundle savedInstanceState) {  //必须在onCreate调用
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        if(savedInstanceState != null){  //内存重启  不用添加碎片页面了
-            fragment1 = (Fragment1)fragmentManager.findFragmentByTag(fragment1.getClass().getName());
-            fragment2 = (Fragment2)fragmentManager.findFragmentByTag(fragment2.getClass().getName());
-            fragment3 = (Fragment3)fragmentManager.findFragmentByTag(fragment3.getClass().getName());
+        if (savedInstanceState != null) {  //内存重启  不用添加碎片页面了
+            fragment1 = (Fragment1) fragmentManager.findFragmentByTag(fragment1.getClass().getName());
+            fragment2 = (Fragment2) fragmentManager.findFragmentByTag(fragment2.getClass().getName());
+            fragment3 = (Fragment3) fragmentManager.findFragmentByTag(fragment3.getClass().getName());
 
-        }else{
+        } else {
             fragment1 = new Fragment1();
             fragment2 = new Fragment2();
             fragment3 = new Fragment3();
-            fragmentTransaction.add(R.id.ly,fragment1,fragment1.getClass().getName());
-            fragmentTransaction.add(R.id.ly,fragment2,fragment2.getClass().getName());
-            fragmentTransaction.add(R.id.ly,fragment3,fragment3.getClass().getName());
+            fragmentTransaction.add(R.id.ly, fragment1, fragment1.getClass().getName());
+            fragmentTransaction.add(R.id.ly, fragment2, fragment2.getClass().getName());
+            fragmentTransaction.add(R.id.ly, fragment3, fragment3.getClass().getName());
         }
         fragmentTransaction.hide(fragment1);
         fragmentTransaction.hide(fragment2);
@@ -81,7 +81,7 @@ public class TestSignalFragmentActivity extends AppCompatActivity {
         fragmentTransaction.commit();   //提交事务
     }
 
-    private void show_fragement(Fragment fragment){
+    private void show_fragement(Fragment fragment) {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.hide(fragment1);
         fragmentTransaction.hide(fragment2);
